@@ -1,0 +1,4 @@
+include LICENCE
+include README.rst
+graft initial_avatars
+global-exclude *.pyc
