@@ -16,7 +16,7 @@ setup(
     description='A simple Django app to get username based initial avatars, or gravatars.',
     keywords='django gravatar initial avatar',
     long_description=open('README.rst').read(),
-    url='http://www.example.com/',
+    url='https://github.com/axiome-oss/django-initial-avatars',
     author='Mathieu Requillart',
     author_email='mrequillart@axiome.io',
     install_requires=[
