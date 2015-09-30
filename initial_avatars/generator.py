@@ -95,14 +95,13 @@ class AvatarGenerator(object):
                 return url
         except NameError:
             pass
-        finally:
-            self.css_class = "initial-avatar"
-            self.path = self.path()
-            if default_storage.exists(self.path):
-                url = default_storage.url(self.path)
-            else:
-                url = self.genavatar()
-            return url
+        self.css_class = "initial-avatar"
+        self.path = self.path()
+        if default_storage.exists(self.path):
+            url = default_storage.url(self.path)
+        else:
+            url = self.genavatar()
+        return url
 
     def get_avatar(self):
         return '<img class="{css_class}" src="{src}" width="{width}" height="{height}"/>'.format(css_class=self.css_class, src=self.get_avatar_url(), width=self.size, height=self.size)
