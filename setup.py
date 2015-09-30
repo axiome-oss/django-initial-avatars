@@ -8,12 +8,12 @@ with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as readme:
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
-    name='django-intial-avatars',
+    name='django-initial-avatars',
     version='0.1',
     packages=['initial_avatars', 'initial_avatars.templatetags'],
     include_package_data=True,
     license='BSD License', 
-    description='A simple Django app to get username based initial avatars, or gravatars.',
+    description='A simple Django app to get avatars based on username and initials if no gravatars is associated to the email address.',
     keywords='django gravatar initial avatar',
     long_description=open('README.rst').read(),
     url='https://github.com/axiome-oss/django-initial-avatars',
