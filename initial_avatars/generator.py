@@ -1,4 +1,7 @@
-from django_gravatar.helpers import get_gravatar_url, GRAVATAR_DEFAULT_SIZE, has_gravatar
+try:
+    from django_gravatar.helpers import get_gravatar_url, GRAVATAR_DEFAULT_SIZE, has_gravatar
+except ImportError:
+    pass
 from django.utils.html import escape
 from django.contrib.auth.models import User
 from django.conf import settings
@@ -18,6 +21,8 @@ class AvatarGenerator(object):
     def __init__(self, user, size=GRAVATAR_DEFAULT_SIZE):
         self.user = user
         self.size = size
+        self.path = None
+        self.css_class = None
 
     def name(self):
         return '{0}-{1}x{1}.jpg'.format(self.user.username, self.size)
@@ -76,20 +81,28 @@ class AvatarGenerator(object):
         try:
             f = open(tmpPath)
             django_file = File(f)
-            saved_file = default_storage.save(self.path(), django_file)
+            saved_file = default_storage.save(self.path, django_file)
             os.remove(tmpPath)
             return default_storage.url(saved_file)
         except Exception, e:
             print e
 
-    def get_avatar(self):
-        if has_gravatar(self.user.email):
-            css_class = "gravatar"
-            url = escape(get_gravatar_url(email=self.user.email, size=self.size))
-        else:
-            css_class = "initial-avatar"
-            if default_storage.exists(self.path()):
-                url = default_storage.url(self.path())
+    def get_avatar_url(self):
+        try:
+            if has_gravatar(self.user.email):
+                self.css_class = "gravatar"
+                url = escape(get_gravatar_url(email=self.user.email, size=self.size))
+                return url
+        except NameError:
+            pass
+        finally:
+            self.css_class = "initial-avatar"
+            self.path = self.path()
+            if default_storage.exists(self.path):
+                url = default_storage.url(self.path)
             else:
                 url = self.genavatar()
-        return '<img class="{css_class}" src="{src}" width="{width}" height="{height}"/>'.format(css_class=css_class, src=url, width=self.size, height=self.size)
+            return url
+
+    def get_avatar(self):
+        return '<img class="{css_class}" src="{src}" width="{width}" height="{height}"/>'.format(css_class=self.css_class, src=self.get_avatar_url(), width=self.size, height=self.size)
