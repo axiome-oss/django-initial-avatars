@@ -4,8 +4,6 @@ django-initial-avatars
 
 django-initial-avatars is a simple Django app which generates avatars based on username and initials if associated email adress has no gravatar
 
-Detailed documentation is in the "docs" directory.
-
 Dependencies
 ------------
 
@@ -32,17 +30,36 @@ Quick start
 -----------
 1. install app requirements
 
-1. Add "django-initial-avatars" to your INSTALLED_APPS setting like this::
+2. Add "django-initial-avatars" to your INSTALLED_APPS setting like this::
 
     INSTALLED_APPS = (
         ...
         'initial_avatars',
     )
 
-2. Include the django-initial-avatar URLconf in your project urls.py like this::
+3. Include the django-initial-avatar URLconf in your project urls.py like this::
 
     url(r'^avatar/', include('initial_avatars.urls')),
 
+4. Launch development server
+
+	python manage.py runserver
+
+5. Each user has now an endpoint for his avatar:
+
+	localhost:8000/avatar/user[/size]
+
+6. In your templates, use :
+
+    {% load initial_avatars %}
+
+    {% get_initial_avatar user [size] %}
+or
+    {% get_initial_avatar user.email [size] %}
 
 
+7. To-do:
 
+	Write Tests
+	Make django-gravatar2 optionnal
+	add settings ?
