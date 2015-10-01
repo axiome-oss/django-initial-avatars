@@ -85,7 +85,7 @@ class AvatarGenerator(object):
             django_file = File(f)
             saved_file = default_storage.save(self.path(), django_file)
             os.remove(tmpPath)
-            return default_storage.url(saved_file)
+            return default_storage.url(os.path.relpath(self.path(), settings.MEDIA_ROOT))
         except Exception, e:
             print e
 
@@ -99,7 +99,7 @@ class AvatarGenerator(object):
             pass
         self.css_class = "initial-avatar"
         if default_storage.exists(self.path()):
-            url = default_storage.url(self.path())
+            url = default_storage.url(os.path.relpath(self.path(), settings.MEDIA_ROOT))
         else:
             url = self.genavatar()
         return url
