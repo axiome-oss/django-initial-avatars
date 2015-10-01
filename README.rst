@@ -28,9 +28,9 @@ The font is licensed under the Ubuntu Font Licence, see the
 
 Quick start
 -----------
-1. install app requirements
+1. install app requirements::
 
-2. install django-initial-avatars through pip
+2. install django-initial-avatars through pip::
 
     pip install django-initial-avatars
 
@@ -69,7 +69,7 @@ or
     {% get_initial_avatar user.email [size] %}
 
 
-9. To-do:
+9. To-do::
 
 	Write Tests
 
