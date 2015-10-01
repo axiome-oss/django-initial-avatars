@@ -30,11 +30,15 @@ Quick start
 -----------
 1. install app requirements
 
-2. If you want to use gravatar for users who have one, install django-gravatar2::
+2. install django-initial-avatars through pip
+
+    pip install django-initial-avatars
+
+3. If you want to use gravatar for users who have one, install django-gravatar2::
 
     pip install django-gravatar2
 
-3. Add "django-initial-avatars" to your INSTALLED_APPS setting like this::
+4. Add "django-initial-avatars" to your INSTALLED_APPS setting like this::
 
     INSTALLED_APPS = (
         ...
@@ -42,19 +46,19 @@ Quick start
         ['django_gravatar',]
     )
 
-4. Include the django-initial-avatar URLconf in your project urls.py like this::
+5. Include the django-initial-avatar URLconf in your project urls.py like this::
 
     url(r'^avatar/', include('initial_avatars.urls')),
 
-5. Launch development server::
+6. Launch development server::
 
 	python manage.py runserver
 
-6. Each user has now an endpoint for his avatar::
+7. Each user has now an endpoint for his avatar::
 
 	localhost:8000/avatar/user[/size]
 
-7. In your templates, use::
+8. In your templates, use::
 
     {% load initial_avatars %}
 
@@ -65,7 +69,7 @@ or
     {% get_initial_avatar user.email [size] %}
 
 
-8. To-do:
+9. To-do:
 
 	Write Tests
 
