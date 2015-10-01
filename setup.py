@@ -9,7 +9,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='django-initial-avatars',
-    version='0.1',
+    version='0.2',
     packages=['initial_avatars', 'initial_avatars.templatetags'],
     include_package_data=True,
     license='BSD License', 
@@ -20,7 +20,6 @@ setup(
     author='Mathieu Requillart',
     author_email='mrequillart@axiome.io',
     install_requires=[
-        'django-gravatar2',
         'Pillow',
     ],
     classifiers=[
@@ -35,5 +34,7 @@ setup(
         'Topic :: Internet :: WWW/HTTP',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
     ],
+    extras_require={'gravatar': ['django-gravatar2>=1.3.0'],
+    }
     zip_safe = False,
 )
