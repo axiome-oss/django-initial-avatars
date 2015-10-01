@@ -1,5 +1,5 @@
 try:
-    from django_gravatar.helpers import get_gravatar_url, GRAVATAR_DEFAULT_SIZE, has_gravatar
+    from django_gravatar.helpers import get_gravatar_url, has_gravatar
 except ImportError:
     pass
 from django.utils.html import escape
@@ -13,6 +13,8 @@ from math import sqrt
 from hashlib import md5
 import os
 
+GRAVATAR_DEFAULT_SIZE = getattr(settings, 'GRAVATAR_DEFAULT_SIZE', 80)
+
 class AvatarGenerator(object):
     """
     inspired by https://github.com/4teamwork/ftw.avatar
@@ -21,7 +23,7 @@ class AvatarGenerator(object):
     def __init__(self, user, size=GRAVATAR_DEFAULT_SIZE):
         self.user = user
         self.size = size
-        self.path = None
+        self.url = None
         self.css_class = None
 
     def name(self):
@@ -81,7 +83,7 @@ class AvatarGenerator(object):
         try:
             f = open(tmpPath)
             django_file = File(f)
-            saved_file = default_storage.save(self.path, django_file)
+            saved_file = default_storage.save(self.path(), django_file)
             os.remove(tmpPath)
             return default_storage.url(saved_file)
         except Exception, e:
@@ -96,12 +98,12 @@ class AvatarGenerator(object):
         except NameError:
             pass
         self.css_class = "initial-avatar"
-        self.path = self.path()
-        if default_storage.exists(self.path):
-            url = default_storage.url(self.path)
+        if default_storage.exists(self.path()):
+            url = default_storage.url(self.path())
         else:
             url = self.genavatar()
         return url
 
     def get_avatar(self):
-        return '<img class="{css_class}" src="{src}" width="{width}" height="{height}"/>'.format(css_class=self.css_class, src=self.get_avatar_url(), width=self.size, height=self.size)
+        self.url = self.get_avatar_url()
+        return '<img class="{css_class}" src="{src}" width="{width}" height="{height}"/>'.format(css_class=self.css_class, src=self.url, width=self.size, height=self.size)
