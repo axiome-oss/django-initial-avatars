@@ -33,7 +33,7 @@ class AvatarGenerator(object):
         if 'tenant_schemas' in settings.INSTALLED_APPS:
             return os.path.join(connection.tenant.schema_name, 'avatars', self.user.username, '{0}x{0}'.format(self.size), self.name())
         else:
-            return os.path.join(settings.MEDIA_ROOT, 'avatars', self.user.username, '{0}x{0}'.format(self.size), self.name())
+            return os.path.join('avatars', self.user.username, '{0}x{0}'.format(self.size), self.name())
 
     def font(self):
         font_path = os.path.join(os.path.dirname(__file__), 'font', 'UbuntuMono-B.ttf')
@@ -85,7 +85,7 @@ class AvatarGenerator(object):
             django_file = File(f)
             saved_file = default_storage.save(self.path(), django_file)
             os.remove(tmpPath)
-            return default_storage.url(os.path.relpath(self.path(), settings.MEDIA_ROOT))
+            return default_storage.url(self.path())
         except Exception, e:
             print e
 
@@ -99,7 +99,7 @@ class AvatarGenerator(object):
             pass
         self.css_class = "initial-avatar"
         if default_storage.exists(self.path()):
-            url = default_storage.url(os.path.relpath(self.path(), settings.MEDIA_ROOT))
+            url = default_storage.url(self.path())
         else:
             url = self.genavatar()
         return url
