@@ -35,6 +35,6 @@ setup(
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
     ],
     extras_require={'gravatar': ['django-gravatar2>=1.3.0'],
-    }
+    },
     zip_safe = False,
 )
