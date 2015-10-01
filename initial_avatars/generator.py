@@ -1,4 +1,7 @@
-from django_gravatar.helpers import get_gravatar_url, GRAVATAR_DEFAULT_SIZE, has_gravatar
+try:
+    from django_gravatar.helpers import get_gravatar_url, has_gravatar
+except ImportError:
+    pass
 from django.utils.html import escape
 from django.contrib.auth.models import User
 from django.conf import settings
@@ -10,6 +13,8 @@ from math import sqrt
 from hashlib import md5
 import os
 
+GRAVATAR_DEFAULT_SIZE = getattr(settings, 'GRAVATAR_DEFAULT_SIZE', 80)
+
 class AvatarGenerator(object):
     """
     inspired by https://github.com/4teamwork/ftw.avatar
@@ -18,6 +23,8 @@ class AvatarGenerator(object):
     def __init__(self, user, size=GRAVATAR_DEFAULT_SIZE):
         self.user = user
         self.size = size
+        self.url = None
+        self.css_class = None
 
     def name(self):
         return '{0}-{1}x{1}.jpg'.format(self.user.username, self.size)
@@ -26,7 +33,7 @@ class AvatarGenerator(object):
         if 'tenant_schemas' in settings.INSTALLED_APPS:
             return os.path.join(connection.tenant.schema_name, 'avatars', self.user.username, '{0}x{0}'.format(self.size), self.name())
         else:
-            return os.path.join(settings.MEDIA_ROOT, 'avatars', self.user.username, '{0}x{0}'.format(self.size), self.name())
+            return os.path.join('avatars', self.user.username, '{0}x{0}'.format(self.size), self.name())
 
     def font(self):
         font_path = os.path.join(os.path.dirname(__file__), 'font', 'UbuntuMono-B.ttf')
@@ -78,18 +85,25 @@ class AvatarGenerator(object):
             django_file = File(f)
             saved_file = default_storage.save(self.path(), django_file)
             os.remove(tmpPath)
-            return default_storage.url(saved_file)
+            return default_storage.url(self.path())
         except Exception, e:
             print e
 
-    def get_avatar(self):
-        if has_gravatar(self.user.email):
-            css_class = "gravatar"
-            url = escape(get_gravatar_url(email=self.user.email, size=self.size))
+    def get_avatar_url(self):
+        try:
+            if has_gravatar(self.user.email):
+                self.css_class = "gravatar"
+                url = escape(get_gravatar_url(email=self.user.email, size=self.size))
+                return url
+        except NameError:
+            pass
+        self.css_class = "initial-avatar"
+        if default_storage.exists(self.path()):
+            url = default_storage.url(self.path())
         else:
-            css_class = "initial-avatar"
-            if default_storage.exists(self.path()):
-                url = default_storage.url(self.path())
-            else:
-                url = self.genavatar()
-        return '<img class="{css_class}" src="{src}" width="{width}" height="{height}"/>'.format(css_class=css_class, src=url, width=self.size, height=self.size)
+            url = self.genavatar()
+        return url
+
+    def get_avatar(self):
+        self.url = self.get_avatar_url()
+        return '<img class="{css_class}" src="{src}" width="{width}" height="{height}"/>'.format(css_class=self.css_class, src=self.url, width=self.size, height=self.size)

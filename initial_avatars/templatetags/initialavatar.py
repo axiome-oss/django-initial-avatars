@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django import template
-from initial_avatars.generator import AvatarGenerator
+from initial_avatars.generator import AvatarGenerator, GRAVATAR_DEFAULT_SIZE
 
 register = template.Library()
 
@@ -12,5 +12,8 @@ def get_initial_avatar(user_or_email, size=GRAVATAR_DEFAULT_SIZE):
         email = user_or_email.email
     else:
         email = user_or_email
-    user = User.objects.get(email=email)
+    try:
+        user = User.objects.get(email=email)
+    except User.DoesNotExists:
+        return '<img>src="" width="{width}" height="{height}"/>'.format(width=size, height=size)
     return AvatarGenerator(user, size=int(size)).get_avatar()
