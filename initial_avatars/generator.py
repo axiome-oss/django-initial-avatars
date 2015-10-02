@@ -35,9 +35,13 @@ class AvatarGenerator(object):
         else:
             return os.path.join('avatars', self.user.username, '{0}x{0}'.format(self.size), self.name())
 
+    def font_size(self):
+        font_size = int(self.size * (1 - 0.1 * len(self.text())))
+        return font_size
+
     def font(self):
         font_path = os.path.join(os.path.dirname(__file__), 'font', 'UbuntuMono-B.ttf')
-        font_size = int(self.size * (1 - 0.1 * len(self.text())))
+        font_size = self.font_size()
         return ImageFont.truetype(font_path, size=font_size)
 
     def background(self):
@@ -46,15 +50,19 @@ class AvatarGenerator(object):
         background = tuple(int(value, 16)%256 for value in hash_values)
         return background
 
-    def foreground(self):
-        """
-        explanation of the formula on http://www.nbdtech.com/Blog/archive/2008/04/27/Calculating-the-Perceived-Brightness-of-a-Color.aspx
-        """
+    def brightness(self):
         rCoef = 0.241
         gCoef = 0.691
         bCoef = 0.068
         background = self.background()
         brightness = sqrt(rCoef * background[0]**2 + gCoef * background[1]**2 + bCoef * background[2]**2)
+        return brightness
+
+    def foreground(self):
+        """
+        explanation of the formula on http://www.nbdtech.com/Blog/archive/2008/04/27/Calculating-the-Perceived-Brightness-of-a-Color.aspx
+        """
+        brightness = self.brightness()
         if brightness > 130:
             return (0, 0, 0)
         else:
