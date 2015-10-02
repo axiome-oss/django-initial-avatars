@@ -20,6 +20,7 @@ var/
 include/
 local/
 log/
+tests/static/
 *.egg-info/
 .installed.cfg
 *.egg
