@@ -5,6 +5,7 @@ from django.template import Context, Template
 from PIL import Image, ImageDraw, ImageFont
 from initial_avatars.views import avatar
 from initial_avatars.generator import AvatarGenerator
+from datetime import datetime
 import os
 
 class TestAvatarGenerator(TestCase):
@@ -58,6 +59,9 @@ class TestAvatarGenerator(TestCase):
         self.assertEqual(self.genA.get_avatar(), '<img class="initial-avatar" src="http://django-initial-avatars.py/avatars/JAB/80x80/JAB-80x80.jpg" width="80" height="80"/>')
         self.assertEqual(self.genB.get_avatar(),'<img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?s=80&amp;r=g&amp;d=mm" width="80" height="80"/>')
         self.assertTrue(default_storage.exists(self.genA.path()))
+
+    def test_last_modified(self):
+        self.assertIsInstance(self.genA.last_modification(), datetime)
 
 class TestTemplateTags(TestCase):
 
