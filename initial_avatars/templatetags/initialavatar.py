@@ -14,6 +14,6 @@ def get_initial_avatar(user_or_email, size=GRAVATAR_DEFAULT_SIZE):
         email = user_or_email
     try:
         user = User.objects.get(email=email)
-    except User.DoesNotExists:
-        return '<img>src="" width="{width}" height="{height}"/>'.format(width=size, height=size)
+    except User.DoesNotExist:
+        return '<img src="" width="{width}" height="{height}"/>'.format(width=size, height=size)
     return AvatarGenerator(user, size=int(size)).get_avatar()
