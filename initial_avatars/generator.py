@@ -3,6 +3,7 @@ try:
 except ImportError:
     pass
 from django.utils.html import escape
+from django.utils import timezone
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.core.files import File
@@ -11,7 +12,10 @@ from django.db import connection
 from PIL import Image, ImageDraw, ImageFont
 from math import sqrt
 from hashlib import md5
-import os
+from datetime import datetime
+import os, urllib2
+
+GRAVATAR_DEFAULT_SIZE = getattr(settings, 'GRAVATAR_DEFAULT_SIZE', 80)
 
 GRAVATAR_DEFAULT_SIZE = getattr(settings, 'GRAVATAR_DEFAULT_SIZE', 80)
 
@@ -80,6 +84,19 @@ class AvatarGenerator(object):
         else:
             initial = self.user.username[:1].upper()
         return initial
+
+    def last_modification(self):
+        if default_storage.exists(self.path()):
+            try:
+                return default_storage.modified_time(self.path())
+            except AttributeError, e:
+                return timezone.now()
+        else:
+            try:
+                info = urllib2.urlopen(get_gravatar_url(email=self.user.email, size=self.size)).info()
+                return datetime.strptime(info['Last-Modified'], "%a, %d %b %Y %H:%M:%S GMT")
+            except NameError:
+                return None
 
     def genavatar(self):
         image = Image.new('RGBA', (self.size, self.size), self.background())
