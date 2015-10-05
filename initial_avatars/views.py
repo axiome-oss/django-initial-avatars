@@ -22,6 +22,4 @@ def avatar(request, username, size=GRAVATAR_DEFAULT_SIZE):
         response['Expires'] = (date.today() + timedelta(days=31)).strftime('%a, %d %b %Y 20:00:00 GMT')
         return response
     except Exception, e:
-        print e
-        print e.__class__.__name__
         return HttpResponse('Not Found', status=404)
