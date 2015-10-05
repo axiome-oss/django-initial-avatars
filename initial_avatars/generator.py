@@ -8,7 +8,6 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from django.core.files import File
 from django.core.files.storage import default_storage
-from django.db import connection
 from PIL import Image, ImageDraw, ImageFont
 from math import sqrt
 from hashlib import md5
@@ -16,8 +15,7 @@ from datetime import datetime
 import os, urllib2
 
 GRAVATAR_DEFAULT_SIZE = getattr(settings, 'GRAVATAR_DEFAULT_SIZE', 80)
-
-GRAVATAR_DEFAULT_SIZE = getattr(settings, 'GRAVATAR_DEFAULT_SIZE', 80)
+INITIAL_AVATARS_PATH = getattr(settings, 'INITIAL_AVATARS_PATH', 'avatars')
 
 class AvatarGenerator(object):
     """
@@ -34,10 +32,7 @@ class AvatarGenerator(object):
         return '{0}-{1}x{1}.jpg'.format(self.user.username, self.size)
 
     def path(self):
-        if 'tenant_schemas' in settings.INSTALLED_APPS:
-            return os.path.join(connection.tenant.schema_name, 'avatars', self.user.username, '{0}x{0}'.format(self.size), self.name())
-        else:
-            return os.path.join('avatars', self.user.username, '{0}x{0}'.format(self.size), self.name())
+        return os.path.join(INITIAL_AVATARS_PATH, self.user.username, '{0}x{0}'.format(self.size), self.name())
 
     def font_size(self):
         font_size = int(self.size * (1 - 0.1 * len(self.text())))
@@ -55,6 +50,9 @@ class AvatarGenerator(object):
         return background
 
     def brightness(self):
+        """
+        explanation of the formula on http://www.nbdtech.com/Blog/archive/2008/04/27/Calculating-the-Perceived-Brightness-of-a-Color.aspx
+        """
         rCoef = 0.241
         gCoef = 0.691
         bCoef = 0.068
@@ -63,9 +61,6 @@ class AvatarGenerator(object):
         return brightness
 
     def foreground(self):
-        """
-        explanation of the formula on http://www.nbdtech.com/Blog/archive/2008/04/27/Calculating-the-Perceived-Brightness-of-a-Color.aspx
-        """
         brightness = self.brightness()
         if brightness > 130:
             return (0, 0, 0)

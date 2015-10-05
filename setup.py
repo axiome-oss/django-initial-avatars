@@ -9,7 +9,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='django-initial-avatars',
-    version='0.3.1',
+    version='0.4.0',
     packages=['initial_avatars', 'initial_avatars.templatetags'],
     include_package_data=True,
     license='BSD License', 
@@ -21,6 +21,7 @@ setup(
     author_email='mrequillart@axiome.io',
     install_requires=[
         'Pillow',
+        'Django',
     ],
     classifiers=[
         'Environment :: Web Environment',
