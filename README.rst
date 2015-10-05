@@ -60,7 +60,7 @@ Quick start
 
 8. In your templates, use::
 
-    {% load initial_avatars %}
+    {% load initialavatar %}
 
     {% get_initial_avatar user [size] %}
 

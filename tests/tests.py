@@ -9,6 +9,9 @@ from datetime import datetime
 import os
 
 class TestAvatarGenerator(TestCase):
+
+    TEMPLATE = Template("{% load initialavatar %} {% get_initial_avatar user %}")
+
     def setUp(self):
         self.userA = User(username='JAB', email='admin@axiome.io', password='top_secret')
         self.genA = AvatarGenerator(self.userA, 80)
@@ -62,20 +65,16 @@ class TestAvatarGenerator(TestCase):
 
     def test_last_modified(self):
         self.assertIsInstance(self.genA.last_modification(), datetime)
+        self.assertIsInstance(self.genB.last_modification(), datetime)
 
-class TestTemplateTags(TestCase):
-
-    TEMPLATE = Template("{% load initialavatar %} {% get_initial_avatar user %}")
-
-    def setUp(self):
-        self.userA = User.objects.create_user(username='JAB', email='jab@axiome.io', password='top_secret')
-        self.genA = AvatarGenerator(self.userA, 80)
-        self.userB = User.objects.create_user(username='matt', first_name='matt', last_name='something',email='matt@automattic.com', password='top_secret')
-
-    def test_entry_shows_up(self):
+    def test_template_tags(self):
         renderedA = self.TEMPLATE.render(Context({'user': self.userA}))
         self.assertTrue('<img class="initial-avatar" src="http://django-initial-avatars.py/avatars/JAB/80x80/JAB-80x80.jpg" width="80" height="80"/>', renderedA)
         renderedB = self.TEMPLATE.render(Context({'user': self.userB}))
         self.assertTrue('<img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?s=80&amp;r=g&amp;d=mm" width="80" height="80"/>', renderedB)
         renderedAnon = self.TEMPLATE.render(Context({'user': AnonymousUser()}))
         self.assertTrue('<img src="" width="80" height="80"/>', renderedAnon)
+
+    def test_view(self):
+        response = self.client.get('/JAB/', follow=True)
+        self.assertEqual(response.status_code, 302)
