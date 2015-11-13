@@ -29,14 +29,15 @@ class AvatarGenerator(object):
         self.css_class = None
 
     def name(self):
-        return '{0}-{1}x{1}.jpg'.format(self.user.username, self.size)
+        return '{1}x{1}.jpg'.format(self.user.username, self.size)
 
     def path(self):
-        user_path = md5(os.path.join(self.user.username, self.user.first_name, self.user.last_name).encode('utf-8')).hexdigest()
+        user_hash = md5(os.path.join(self.user.username, self.user.first_name, self.user.last_name).encode('utf-8')).hexdigest()
+        user_path = os.path.join('avatars', user_hash, self.name())
         if 'tenant_schemas' in settings.INSTALLED_APPS:
-            return os.path.join(connection.tenant.schema_name, 'avatars', user_path, '{0}x{0}'.format(self.size), self.name())
+            return os.path.join(connection.tenant.schema_name, user_path)
         else:
-            return os.path.join('avatars', user_path, '{0}x{0}'.format(self.size), self.name())
+            return user_path
 
     def font_size(self):
         font_size = int(self.size * (1 - 0.1 * len(self.text())))
