@@ -15,7 +15,6 @@ from datetime import datetime
 import os, urllib2
 
 GRAVATAR_DEFAULT_SIZE = getattr(settings, 'GRAVATAR_DEFAULT_SIZE', 80)
-INITIAL_AVATARS_PATH = getattr(settings, 'INITIAL_AVATARS_PATH', 'avatars')
 
 class AvatarGenerator(object):
     """
