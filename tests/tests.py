@@ -76,9 +76,9 @@ class TestAvatarGenerator(TestCase):
         self.assertTrue('<img src="" width="80" height="80"/>', renderedAnon)
 
     def test_view(self):
-        responseA = self.client.get('/JAB/')
+        responseA = self.client.get('/1/')
         self.assertEqual(responseA.status_code, 302)
-        responseB = self.client.get('/matt/')
+        responseB = self.client.get('/2/')
         self.assertEqual(responseB.status_code, 302)
 
     def test_anon_view(self):
@@ -153,9 +153,9 @@ class TestAvatarGeneratorNotDefault(TestCase):
         self.assertTrue('<img src="" width="150" height="150"/>', renderedAnon)
 
     def test_view(self):
-        responseA = self.client.get('/JAB/150/')
+        responseA = self.client.get('/1/150/')
         self.assertEqual(responseA.status_code, 302)
-        responseB = self.client.get('/matt/150/')
+        responseB = self.client.get('/2/150/')
         self.assertEqual(responseB.status_code, 302)
-        responseAnon = self.client.get('/anon/150/')
+        responseAnon = self.client.get('/3/150/')
         self.assertEqual(responseAnon.status_code, 404)
