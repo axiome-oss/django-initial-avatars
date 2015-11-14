@@ -21,6 +21,7 @@ setup(
     author_email='mrequillart@axiome.io',
     install_requires=[
         'Pillow',
+        'Django',
     ],
     classifiers=[
         'Environment :: Web Environment',

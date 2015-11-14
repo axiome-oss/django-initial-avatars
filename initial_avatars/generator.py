@@ -8,14 +8,11 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from django.core.files import File
 from django.core.files.storage import default_storage
-from django.db import connection
 from PIL import Image, ImageDraw, ImageFont
 from math import sqrt
 from hashlib import md5
 from datetime import datetime
 import os, urllib2
-
-GRAVATAR_DEFAULT_SIZE = getattr(settings, 'GRAVATAR_DEFAULT_SIZE', 80)
 
 GRAVATAR_DEFAULT_SIZE = getattr(settings, 'GRAVATAR_DEFAULT_SIZE', 80)
 
@@ -31,7 +28,7 @@ class AvatarGenerator(object):
         self.css_class = None
 
     def name(self):
-        return '{1}x{1}.jpg'.format(self.user.username, self.size)
+        return '{0}x{0}.jpg'.format(self.size)
 
     def path(self):
         user_hash = md5(os.path.join(self.user.username, self.user.first_name, self.user.last_name).encode('utf-8')).hexdigest()
@@ -57,6 +54,9 @@ class AvatarGenerator(object):
         return background
 
     def brightness(self):
+        """
+        explanation of the formula on http://www.nbdtech.com/Blog/archive/2008/04/27/Calculating-the-Perceived-Brightness-of-a-Color.aspx
+        """
         rCoef = 0.241
         gCoef = 0.691
         bCoef = 0.068
@@ -65,9 +65,6 @@ class AvatarGenerator(object):
         return brightness
 
     def foreground(self):
-        """
-        explanation of the formula on http://www.nbdtech.com/Blog/archive/2008/04/27/Calculating-the-Perceived-Brightness-of-a-Color.aspx
-        """
         brightness = self.brightness()
         if brightness > 130:
             return (0, 0, 0)

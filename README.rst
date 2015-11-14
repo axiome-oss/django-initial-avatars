@@ -64,14 +64,6 @@ Quick start
 
     {% get_initial_avatar user [size] %}
 
-or
+or:
 
     {% get_initial_avatar user.email [size] %}
-
-
-9. To-do::
-
-	Write Tests
-
-	add settings ?
-
