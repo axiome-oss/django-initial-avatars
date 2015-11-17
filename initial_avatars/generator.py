@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from django.core.files import File
 from django.core.files.storage import default_storage
+from django.db import connection
 from PIL import Image, ImageDraw, ImageFont
 from math import sqrt
 from hashlib import md5
