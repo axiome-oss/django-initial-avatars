@@ -1,5 +1,5 @@
-=====
 django-initial-avatars
+
 =====
 
 django-initial-avatars is a simple Django app which generates avatars based on username and initials. If django_gravatar is installed, user gravatar is preferred.
@@ -7,13 +7,13 @@ django-initial-avatars is a simple Django app which generates avatars based on u
 Dependencies
 ------------
 
-Generating avatars requires a `Pillow`_ (or PIL) installation with `freetype`_ support.
+Generating avatars requires a `Pillow` installation with `freetype` support.
 
-``freetype`` can easily be installed on ubuntu with _::
+``freetype`` can easily be installed on ubuntu with::
 	
 	$ sudo aptitude install libfreetype6-dev
 
-or on OS X with `homebrew`_::
+or on OS X with `homebrew`::
 
     $ brew install freetype
 
@@ -24,11 +24,11 @@ Font licensing
 
 For generating the avatar the font ``Ubuntu Monospace`` is used.
 The font is licensed under the Ubuntu Font Licence, see the
-`License <http://font.ubuntu.com/licence/>`_
+`License <http://font.ubuntu.com/licence/>`
 
 Quick start
 -----------
-1. install app requirements::
+1. install app requirements
 
 2. install django-initial-avatars through pip::
 
@@ -56,7 +56,7 @@ Quick start
 
 7. Each user has now an endpoint for his avatar::
 
-	localhost:8000/avatar/user[/size]
+	localhost:8000/avatar/user_id/[size/]
 
 8. In your templates, use::
 
@@ -64,6 +64,19 @@ Quick start
 
     {% get_initial_avatar user [size] %}
 
-or:
-
     {% get_initial_avatar user.email [size] %}
+
+9. Tests
+
+    Django-initial-avatars is provided with tests, they require django-gravatar2
+
+    You can launch them in the virtualenv like this::
+
+        python runtests.py
+
+    It might happen that a calculated position fails because of a minor difference in the result, don't care about it.
+
+10. Contributing
+
+    Contributions are welcome ! Feel free to write an issue for any feedback you have or send a pull request on Github <https://github.com/axiome-oss/django-initial-avatars>
+

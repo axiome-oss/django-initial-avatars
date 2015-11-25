@@ -1,0 +1,15 @@
+v0.5.2:
+	- update README
+	- add doc string to generator.py
+	- add changelog
+
+v0.5.1:
+	- fix: missing import when using django-tenant-schemas
+
+v0.5.0:
+	- security: use user_id instead of user_username for the url
+
+v0.4:
+	- feat: avatar path now use md5 of username + first_name + last_name insted of simple username:
+		permit to updates the avatar when user changes its settings
+		+ better for security
