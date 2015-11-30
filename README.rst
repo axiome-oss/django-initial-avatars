@@ -1,6 +1,9 @@
 django-initial-avatars
 
-=====
+======================
+
+.. image:: https://badge.fury.io/py/django-initial-avatars.svg
+    :target: https://badge.fury.io/py/django-initial-avatars
 
 django-initial-avatars is a simple Django app which generates avatars based on username and initials. If django_gravatar is installed, user gravatar is preferred.
 
