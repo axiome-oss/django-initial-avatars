@@ -27,7 +27,7 @@ Font licensing
 
 For generating the avatar the font ``Ubuntu Monospace`` is used.
 The font is licensed under the Ubuntu Font Licence, see the
-`License <http://font.ubuntu.com/licence/>`
+`License <http://font.ubuntu.com/licence/>_`
 
 Quick start
 -----------
