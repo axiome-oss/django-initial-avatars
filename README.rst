@@ -95,7 +95,7 @@ Quick start
 
 10. Contributing
 
-    Contributions are welcome ! Feel free to write an issue for any feedback you have or send a pull request on Github <https://github.com/axiome-oss/django-initial-avatars>
+    Contributions are welcome ! Feel free to write an issue for any feedback you have or send a pull request on `Github <https://github.com/axiome-oss/django-initial-avatars>`_
 
 11. Used on:
 
