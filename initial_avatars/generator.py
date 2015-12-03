@@ -8,12 +8,13 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from django.core.files import File
 from django.core.files.storage import default_storage
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db import connection
 from PIL import Image, ImageDraw, ImageFont
 from math import sqrt
 from hashlib import md5
 from datetime import datetime
-import os, urllib2
+import os, urllib2, StringIO
 
 GRAVATAR_DEFAULT_SIZE = getattr(settings, 'GRAVATAR_DEFAULT_SIZE', 80)
 
@@ -137,15 +138,14 @@ class AvatarGenerator(object):
         tmpPath = os.path.join('/tmp/', self.name())
         w, h = self.position(draw)
         draw.text((w, h), self.text(), fill=self.foreground(), font=self.font())
-        image.save(tmpPath)
+        image_io = StringIO.StringIO()
+        image.save(image_io, format='JPEG')
         try:
-            f = open(tmpPath)
-            django_file = File(f)
+            django_file = InMemoryUploadedFile(image_io, None, self.name(), 'image/jpeg', image_io.len, None)
             saved_file = default_storage.save(self.path(), django_file)
-            os.remove(tmpPath)
             return default_storage.url(self.path())
         except Exception, e:
-            print e
+            raise e
 
     def get_avatar_url(self):
         """
