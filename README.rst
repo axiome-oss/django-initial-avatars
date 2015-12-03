@@ -83,7 +83,8 @@ Quick start
 
     {% get_initial_avatar user.email [size] %}
 
-9. Tests
+Tests
+--------------
 
 Django-initial-avatars is provided with tests, they require django-gravatar2
 
@@ -93,10 +94,13 @@ You can launch them in the virtualenv like this::
 
 It might happen that a calculated position fails because of a minor difference in the result, don't care about it.
 
-10. Contributing
-
+Contributions
+--------------
     Contributions are welcome ! Feel free to write an issue for any feedback you have or send a pull request on `Github <https://github.com/axiome-oss/django-initial-avatars>`_
 
-11. Used on:
+
+Used on
+--------------
 
     * `Metod <http://www.metod.io/>`_
+    * Add your website here !
