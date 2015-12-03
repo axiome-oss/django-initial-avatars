@@ -85,13 +85,13 @@ Quick start
 
 9. Tests
 
-    Django-initial-avatars is provided with tests, they require django-gravatar2
+Django-initial-avatars is provided with tests, they require django-gravatar2
 
-    You can launch them in the virtualenv like this::
+You can launch them in the virtualenv like this::
 
         python runtests.py
 
-    It might happen that a calculated position fails because of a minor difference in the result, don't care about it.
+It might happen that a calculated position fails because of a minor difference in the result, don't care about it.
 
 10. Contributing
 
