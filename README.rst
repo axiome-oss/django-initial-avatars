@@ -96,11 +96,11 @@ It might happen that a calculated position fails because of a minor difference i
 
 Contributions
 --------------
-    Contributions are welcome ! Feel free to write an issue for any feedback you have or send a pull request on `Github <https://github.com/axiome-oss/django-initial-avatars>`_
+Contributions are welcome ! Feel free to write an issue for any feedback you have or send a pull request on `Github <https://github.com/axiome-oss/django-initial-avatars>`_
 
 
 Used on
 --------------
 
-    * `Metod <http://www.metod.io/>`_
-    * Add your website here !
+* `Metod <http://www.metod.io/>`_
+* Add your website here !
