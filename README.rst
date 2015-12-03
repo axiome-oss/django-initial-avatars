@@ -9,15 +9,16 @@ django-initial-avatars is a simple Django app which generates avatars based on u
 
 Examples
 -----------
+* API endpoint
 .. image:: https://metod-site.s3.amazonaws.com/media/25/initial_avatars.png
     :target: http://www.metod.io/fr/blog/2015/12/02/release-django-initial-avatars/
     :alt: example of django-initial-avatars on Metod
-    :title: django-initial-avatars on Metod front
     
+* Template tag
 .. image:: https://metod-site.s3.amazonaws.com/media/25/initial_avatars_email.png
     :target: http://www.metod.io/fr/blog/2015/12/02/release-django-initial-avatars/
     :alt: example of django-initial-avatars in Metod emails
-    :title: django-initial-avatars in Metod emails
+
     
 
 Dependencies
