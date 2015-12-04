@@ -83,6 +83,14 @@ Quick start
 
     {% get_initial_avatar user.email [size] %}
 
+
+Settings
+--------------
+
+You can define a setting to use a specific backend instead of the default one::
+
+        AVATAR_STORAGE_BACKEND = 'myproject.custom_storages.AvatarStorage'
+
 Tests
 --------------
 

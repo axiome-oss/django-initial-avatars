@@ -1,3 +1,6 @@
+v0.7:
+	- add a setting to let developers choose a specific backend for avatar storage
+
 v0.6:
 	- use StringIO and django InMemoryUploadedFile instead of tmp file
 	- update README
