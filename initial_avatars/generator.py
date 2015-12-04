@@ -18,7 +18,7 @@ import os, urllib2, StringIO
 
 GRAVATAR_DEFAULT_SIZE = getattr(settings, 'GRAVATAR_DEFAULT_SIZE', 80)
 try:
-    AVATAR_STORAGE_BACKEND = get_storage_class(getattr(settings, 'AVATAR_STORAGE_BACKEND'))()
+    AVATAR_STORAGE_BACKEND = get_storage_class(settings.AVATAR_STORAGE_BACKEND)()
 except AttributeError:
     AVATAR_STORAGE_BACKEND = default_storage
 
