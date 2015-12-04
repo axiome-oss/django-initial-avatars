@@ -5,7 +5,7 @@ django-initial-avatars
 .. image:: https://badge.fury.io/py/django-initial-avatars.svg
     :target: https://badge.fury.io/py/django-initial-avatars
 
-django-initial-avatars is a simple Django app which generates avatars based on username and initials. If django_gravatar is installed, user gravatar is preferred.
+django-initial-avatars is a simple Django app which generates avatars based on username and initials. If django_gravatar is installed, user's gravatar is preferred.
 
 Examples
 -----------
@@ -18,8 +18,6 @@ Examples
 .. image:: https://metod-site.s3.amazonaws.com/media/25/initial_avatars_email.png
     :target: http://www.metod.io/fr/blog/2015/12/02/release-django-initial-avatars/
     :alt: example of django-initial-avatars in Metod emails
-
-    
 
 Dependencies
 ------------
@@ -83,11 +81,10 @@ Quick start
 
     {% get_initial_avatar user.email [size] %}
 
-
 Settings
 --------------
 
-You can define a setting to use a specific backend instead of the default one::
+You can define a setting to use a specific storage backend instead of the default one::
 
         AVATAR_STORAGE_BACKEND = 'myproject.custom_storages.AvatarStorage'
 
@@ -104,8 +101,8 @@ It might happen that a calculated position fails because of a minor difference i
 
 Contributions
 --------------
-Contributions are welcome ! Feel free to write an issue for any feedback you have or send a pull request on `Github <https://github.com/axiome-oss/django-initial-avatars>`_
 
+Contributions are welcome ! Feel free to write an issue for any feedback you have or send a pull request on `Github <https://github.com/axiome-oss/django-initial-avatars>`_
 
 Used on
 --------------
