@@ -17,6 +17,7 @@ from datetime import datetime
 import os, urllib2, StringIO
 
 GRAVATAR_DEFAULT_SIZE = getattr(settings, 'GRAVATAR_DEFAULT_SIZE', 80)
+AVATAR_STORAGE_BACKEND = getattr(settings, 'AVATAR_STORAGE_BACKEND', default_storage)
 
 class AvatarGenerator(object):
     """
@@ -117,9 +118,9 @@ class AvatarGenerator(object):
         """
             returns the avatar last_modification
         """
-        if default_storage.exists(self.path()):
+        if AVATAR_STORAGE_BACKEND.exists(self.path()):
             try:
-                return default_storage.modified_time(self.path())
+                return AVATAR_STORAGE_BACKEND.modified_time(self.path())
             except AttributeError, e:
                 return timezone.now()
         else:
@@ -142,8 +143,8 @@ class AvatarGenerator(object):
         image.save(image_io, format='JPEG')
         try:
             django_file = InMemoryUploadedFile(image_io, None, self.name(), 'image/jpeg', image_io.len, None)
-            saved_file = default_storage.save(self.path(), django_file)
-            return default_storage.url(self.path())
+            saved_file = AVATAR_STORAGE_BACKEND.save(self.path(), django_file)
+            return AVATAR_STORAGE_BACKEND.url(self.path())
         except Exception, e:
             raise e
 
@@ -159,8 +160,8 @@ class AvatarGenerator(object):
         except NameError:
             pass
         self.css_class = "initial-avatar"
-        if default_storage.exists(self.path()):
-            url = default_storage.url(self.path())
+        if AVATAR_STORAGE_BACKEND.exists(self.path()):
+            url = AVATAR_STORAGE_BACKEND.url(self.path())
         else:
             url = self.genavatar()
         return url
