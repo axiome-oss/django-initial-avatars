@@ -7,7 +7,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.core.files import File
-from django.core.files.storage import default_storage
+from django.core.files.storage import default_storage, get_storage_class
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db import connection
 from PIL import Image, ImageDraw, ImageFont
@@ -17,7 +17,10 @@ from datetime import datetime
 import os, urllib2, StringIO
 
 GRAVATAR_DEFAULT_SIZE = getattr(settings, 'GRAVATAR_DEFAULT_SIZE', 80)
-AVATAR_STORAGE_BACKEND = getattr(settings, 'AVATAR_STORAGE_BACKEND', default_storage)
+try:
+    AVATAR_STORAGE_BACKEND = get_storage_class(getattr(settings, 'AVATAR_STORAGE_BACKEND'))()
+except AttributeError:
+    AVATAR_STORAGE_BACKEND = default_storage
 
 class AvatarGenerator(object):
     """
