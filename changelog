@@ -1,3 +1,7 @@
+v0.6:
+	- use StringIO and django InMemoryUploadedFile instead of tmp file
+	- update README
+
 v0.5.2:
 	- update README
 	- add doc string to generator.py
