@@ -4,9 +4,7 @@ except ImportError:
     pass
 from django.utils.html import escape
 from django.utils import timezone
-from django.contrib.auth.models import User
 from django.conf import settings
-from django.core.files import File
 from django.core.files.storage import default_storage, get_storage_class
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db import connection
@@ -21,6 +19,7 @@ try:
     AVATAR_STORAGE_BACKEND = get_storage_class(settings.AVATAR_STORAGE_BACKEND)()
 except AttributeError:
     AVATAR_STORAGE_BACKEND = default_storage
+
 
 class AvatarGenerator(object):
     """
@@ -71,7 +70,7 @@ class AvatarGenerator(object):
         """
         hash = md5(self.user.username).hexdigest()
         hash_values = (hash[:8], hash[8:16], hash[16:24])
-        background = tuple(int(value, 16)%256 for value in hash_values)
+        background = tuple(int(value, 16) % 256 for value in hash_values)
         return background
 
     def brightness(self):
@@ -124,7 +123,7 @@ class AvatarGenerator(object):
         if AVATAR_STORAGE_BACKEND.exists(self.path()):
             try:
                 return AVATAR_STORAGE_BACKEND.modified_time(self.path())
-            except AttributeError, e:
+            except AttributeError:
                 return timezone.now()
         else:
             try:
@@ -139,14 +138,13 @@ class AvatarGenerator(object):
         """
         image = Image.new('RGBA', (self.size, self.size), self.background())
         draw = ImageDraw.Draw(image)
-        tmpPath = os.path.join('/tmp/', self.name())
         w, h = self.position(draw)
         draw.text((w, h), self.text(), fill=self.foreground(), font=self.font())
         image_io = StringIO.StringIO()
         image.save(image_io, format='JPEG')
         try:
             django_file = InMemoryUploadedFile(image_io, None, self.name(), 'image/jpeg', image_io.len, None)
-            saved_file = AVATAR_STORAGE_BACKEND.save(self.path(), django_file)
+            AVATAR_STORAGE_BACKEND.save(self.path(), django_file)
             return AVATAR_STORAGE_BACKEND.url(self.path())
         except Exception, e:
             raise e
