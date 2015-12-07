@@ -120,17 +120,19 @@ class AvatarGenerator(object):
         """
             returns the avatar last_modification
         """
+        try:
+            if has_gravatar(self.user.email):
+                info = urllib2.urlopen(get_gravatar_url(email=self.user.email, size=self.size)).info()
+                return datetime.strptime(info['Last-Modified'], "%a, %d %b %Y %H:%M:%S GMT")
+        except NameError:
+            pass
         if AVATAR_STORAGE_BACKEND.exists(self.path()):
             try:
                 return AVATAR_STORAGE_BACKEND.modified_time(self.path())
             except AttributeError:
                 return timezone.now()
         else:
-            try:
-                info = urllib2.urlopen(get_gravatar_url(email=self.user.email, size=self.size)).info()
-                return datetime.strptime(info['Last-Modified'], "%a, %d %b %Y %H:%M:%S GMT")
-            except NameError:
-                return None
+            return None
 
     def genavatar(self):
         """
