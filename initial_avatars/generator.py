@@ -44,10 +44,7 @@ class AvatarGenerator(object):
         """
         user_hash = md5(os.path.join(self.user.username, self.user.first_name, self.user.last_name).encode('utf-8')).hexdigest()
         user_path = os.path.join('avatars', user_hash, self.name())
-        if 'tenant_schemas' in settings.INSTALLED_APPS:
-            return os.path.join(connection.tenant.schema_name, user_path)
-        else:
-            return user_path
+        return user_path
 
     def font_size(self):
         """
