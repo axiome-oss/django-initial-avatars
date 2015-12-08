@@ -1,3 +1,7 @@
+v0.7.1:
+	- fix: last_modification on view did not change when avatar changed on
+	storage backend
+
 v0.7:
 	- add a setting to let developers choose a specific backend for avatar storage
 
