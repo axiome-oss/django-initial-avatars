@@ -14,7 +14,6 @@ def last_modified_func(request, id, size=GRAVATAR_DEFAULT_SIZE):
     return AvatarGenerator(u, int(size)).last_modification()
 
 
-@last_modified(last_modified_func)
 def avatar(request, id, size=GRAVATAR_DEFAULT_SIZE):
     user = get_object_or_404(User, id=id)
     url = AvatarGenerator(user, size=int(size)).get_avatar_url()
