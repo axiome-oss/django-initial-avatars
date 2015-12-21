@@ -1,3 +1,7 @@
+v0.7.3: 
+	- removes the last_modified_func decorator because of poor
+	performances
+
 v0.7.2:
 	- removes tenant_schema specific code
 
