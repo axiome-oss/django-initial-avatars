@@ -14,3 +14,6 @@ build:
   stage: build
   script:
     - python setup.py build
+  artifacts:
+    paths:
+      - build/lib/initial_avatars/
