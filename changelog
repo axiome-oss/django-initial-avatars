@@ -1,0 +1,33 @@
+v0.7.3: 
+	- removes the last_modified_func decorator because of poor
+	performances
+
+v0.7.2:
+	- removes tenant_schema specific code
+
+v0.7.1:
+	- fix: last_modification on view did not change when avatar changed on
+	storage backend
+
+v0.7:
+	- add a setting to let developers choose a specific backend for avatar storage
+
+v0.6:
+	- use StringIO and django InMemoryUploadedFile instead of tmp file
+	- update README
+
+v0.5.2:
+	- update README
+	- add doc string to generator.py
+	- add changelog
+
+v0.5.1:
+	- fix: missing import when using django-tenant-schemas
+
+v0.5.0:
+	- security: use user_id instead of user_username for the url
+
+v0.4:
+	- feat: avatar path now use md5 of username + first_name + last_name insted of simple username:
+		permit to updates the avatar when user changes its settings
+		+ better for security

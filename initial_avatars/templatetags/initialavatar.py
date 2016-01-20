@@ -4,6 +4,7 @@ from initial_avatars.generator import AvatarGenerator, GRAVATAR_DEFAULT_SIZE
 
 register = template.Library()
 
+
 @register.simple_tag(name='get_initial_avatar')
 def get_initial_avatar(user_or_email, size=GRAVATAR_DEFAULT_SIZE):
     """ Builds an avatar <img> tag from an user or email """

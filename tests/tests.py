@@ -112,9 +112,9 @@ class TestAvatarGenerator(TestCase):
         )
 
     def test_view(self):
-        responseA = self.client.get('/JAB/')
+        responseA = self.client.get('/1/')
         self.assertEqual(responseA.status_code, 302)
-        responseB = self.client.get('/matt/')
+        responseB = self.client.get('/2/')
         self.assertEqual(responseB.status_code, 302)
 
     def test_anon_view(self):
@@ -227,9 +227,9 @@ class TestAvatarGeneratorNotDefault(TestCase):
         )
 
     def test_view(self):
-        responseA = self.client.get('/JAB/150/')
+        responseA = self.client.get('/1/150/')
         self.assertEqual(responseA.status_code, 302)
-        responseB = self.client.get('/matt/150/')
+        responseB = self.client.get('/2/150/')
         self.assertEqual(responseB.status_code, 302)
         responseAnon = self.client.get('/3/150/')
         self.assertEqual(responseAnon.status_code, 404)
