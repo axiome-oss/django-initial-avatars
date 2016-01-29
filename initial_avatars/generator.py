@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 try:
     from django_gravatar.helpers import get_gravatar_url, has_gravatar
 except ImportError:
