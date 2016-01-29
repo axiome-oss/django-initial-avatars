@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.contrib.auth.models import User
 from django import template
 from initial_avatars.generator import AvatarGenerator, GRAVATAR_DEFAULT_SIZE
