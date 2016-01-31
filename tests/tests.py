@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 from django.contrib.auth.models import AnonymousUser, User
 from django.test import TestCase, RequestFactory
 from django.core.files.storage import default_storage
@@ -13,13 +15,26 @@ class TestAvatarGenerator(TestCase):
     TEMPLATE = Template("{% load initialavatar %} {% get_initial_avatar user %}")
 
     def setUp(self):
-        self.userA = User.objects.create_user(username='JAB', email='admin@axiome.io', password='top_secret')
-        self.genA = AvatarGenerator(self.userA, 80)
-        self.userB = User.objects.create_user(username='matt', first_name='matt', last_name='something',email='matt@automattic.com', password='top_secret')
+        self.userA = User.objects.create_user(
+            username='Stéphane',
+            email='admin@axiome.io',
+            password='top_secret'
+        )
+        self.genA = AvatarGenerator(
+            self.userA,
+            80
+        )
+        self.userB = User.objects.create_user(
+            username='matt',
+            first_name='matt',
+            last_name='something',
+            email='matt@automattic.com',
+            password='top_secret'
+        )
         self.genB = AvatarGenerator(self.userB, 80)
 
     def test_text(self):
-        self.assertEqual(self.genA.text(), 'J')
+        self.assertEqual(self.genA.text(), 'S')
         self.assertEqual(self.genB.text(), 'MS')
 
     def test_font_size(self):
@@ -27,11 +42,11 @@ class TestAvatarGenerator(TestCase):
         self.assertEqual(self.genB.font_size(), 64)
     
     def test_brightness(self):
-        self.assertEqual(int(self.genA.brightness()), 222)
+        self.assertEqual(int(self.genA.brightness()), 219)
         self.assertEqual(int(self.genB.brightness()), 200)
 
     def test_background(self):
-        self.assertEqual(self.genA.background(), (157, 242, 216))
+        self.assertEqual(self.genA.background(), (3, 254, 229))
         self.assertEqual(self.genB.background(), (208, 207, 63))
 
     def test_foreground(self):
@@ -49,17 +64,17 @@ class TestAvatarGenerator(TestCase):
         self.assertEqual(self.genB.name(), "80x80.jpg")
 
     def test_path(self):
-        self.assertEqual(self.genA.path(), "avatars/1de33e9ce3bb61b6f82a27810590a785/80x80.jpg")
+        self.assertEqual(self.genA.path(), "avatars/5c2b143bbec43c5a4e0f18000ebd3280/80x80.jpg")
         self.assertEqual(self.genB.path(), "avatars/579e0547027d49009b38d4ed91afb84d/80x80.jpg")
 
     def test_get_avatar_url(self):
-        self.assertEqual(self.genA.get_avatar_url(), "http://django-initial-avatars.py/avatars/1de33e9ce3bb61b6f82a27810590a785/80x80.jpg")
+        self.assertEqual(self.genA.get_avatar_url(), "http://django-initial-avatars.py/avatars/5c2b143bbec43c5a4e0f18000ebd3280/80x80.jpg")
         self.assertEqual(self.genB.get_avatar_url(), "https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?s=80&amp;r=g&amp;d=mm")
 
     def test_get_avatar(self):
         default_storage.delete(self.genA.path())
         self.assertFalse(default_storage.exists(self.genA.path()))
-        self.assertEqual(self.genA.get_avatar(), '<img class="initial-avatar" src="http://django-initial-avatars.py/avatars/1de33e9ce3bb61b6f82a27810590a785/80x80.jpg" width="80" height="80"/>')
+        self.assertEqual(self.genA.get_avatar(), '<img class="initial-avatar" src="http://django-initial-avatars.py/avatars/5c2b143bbec43c5a4e0f18000ebd3280/80x80.jpg" width="80" height="80"/>')
         self.assertEqual(self.genB.get_avatar(),'<img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?s=80&amp;r=g&amp;d=mm" width="80" height="80"/>')
         self.assertTrue(default_storage.exists(self.genA.path()))
 
@@ -69,7 +84,7 @@ class TestAvatarGenerator(TestCase):
 
     def test_template_tags(self):
         renderedA = self.TEMPLATE.render(Context({'user': self.userA}))
-        self.assertTrue('<img class="initial-avatar" src="http://django-initial-avatars.py/avatars/1de33e9ce3bb61b6f82a27810590a785/80x80.jpg" width="80" height="80"/>', renderedA)
+        self.assertTrue('<img class="initial-avatar" src="http://django-initial-avatars.py/avatars/5c2b143bbec43c5a4e0f18000ebd3280/80x80.jpg" width="80" height="80"/>', renderedA)
         renderedB = self.TEMPLATE.render(Context({'user': self.userB}))
         self.assertTrue('<img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?s=80&amp;r=g&amp;d=mm" width="80" height="80"/>', renderedB)
         renderedAnon = self.TEMPLATE.render(Context({'user': AnonymousUser()}))

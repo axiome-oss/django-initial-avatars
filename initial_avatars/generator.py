@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 try:
     from django_gravatar.helpers import get_gravatar_url, has_gravatar
 except ImportError:
@@ -8,12 +9,13 @@ from django.utils import timezone
 from django.conf import settings
 from django.core.files.storage import default_storage, get_storage_class
 from django.core.files.uploadedfile import InMemoryUploadedFile
-from django.db import connection
 from PIL import Image, ImageDraw, ImageFont
 from math import sqrt
 from hashlib import md5
 from datetime import datetime
-import os, urllib2, StringIO
+import os
+import urllib2
+import StringIO
 
 GRAVATAR_DEFAULT_SIZE = getattr(settings, 'GRAVATAR_DEFAULT_SIZE', 80)
 try:
@@ -66,7 +68,7 @@ class AvatarGenerator(object):
         """
             returns the background color based on the username md5
         """
-        hash = md5(self.user.username).hexdigest()
+        hash = md5(self.user.username.encode('utf-8')).hexdigest()
         hash_values = (hash[:8], hash[8:16], hash[16:24])
         background = tuple(int(value, 16) % 256 for value in hash_values)
         return background
