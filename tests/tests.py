@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.contrib.auth.models import AnonymousUser, User
-from django.test import TestCase, RequestFactory
+from django.test import TestCase
 from django.core.files.storage import default_storage
 from django.template import Context, Template
-from PIL import Image, ImageDraw, ImageFont
-from initial_avatars.views import avatar
+from PIL import Image, ImageDraw
 from initial_avatars.generator import AvatarGenerator
 from datetime import datetime
-import os
+
 
 class TestAvatarGenerator(TestCase):
 
@@ -40,7 +39,7 @@ class TestAvatarGenerator(TestCase):
     def test_font_size(self):
         self.assertEqual(self.genA.font_size(), 72)
         self.assertEqual(self.genB.font_size(), 64)
-    
+
     def test_brightness(self):
         self.assertEqual(int(self.genA.brightness()), 219)
         self.assertEqual(int(self.genB.brightness()), 200)
@@ -50,8 +49,8 @@ class TestAvatarGenerator(TestCase):
         self.assertEqual(self.genB.background(), (208, 207, 63))
 
     def test_foreground(self):
-        self.assertEqual(self.genA.foreground(), (0, 0 , 0))
-        self.assertEqual(self.genB.foreground(), (0, 0 , 0))
+        self.assertEqual(self.genA.foreground(), (0, 0, 0))
+        self.assertEqual(self.genB.foreground(), (0, 0, 0))
 
     def test_position(self):
         image = Image.new('RGBA', (80, 80))
@@ -86,7 +85,10 @@ class TestAvatarGenerator(TestCase):
         renderedA = self.TEMPLATE.render(Context({'user': self.userA}))
         self.assertTrue('<img class="initial-avatar" src="http://django-initial-avatars.py/avatars/5c2b143bbec43c5a4e0f18000ebd3280/80x80.jpg" width="80" height="80"/>', renderedA)
         renderedB = self.TEMPLATE.render(Context({'user': self.userB}))
-        self.assertTrue('<img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?s=80&amp;r=g&amp;d=mm" width="80" height="80"/>', renderedB)
+        self.assertTrue(
+            '<img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?s=80&amp;r=g&amp;d=mm" width="80" height="80"/>',
+            renderedB
+        )
         renderedAnon = self.TEMPLATE.render(Context({'user': AnonymousUser()}))
         self.assertTrue('<img src="" width="80" height="80"/>', renderedAnon)
 
@@ -99,6 +101,7 @@ class TestAvatarGenerator(TestCase):
     def test_anon_view(self):
         responseAnon = self.client.get('/anon/')
         self.assertEqual(responseAnon.status_code, 404)
+
 
 class TestAvatarGeneratorNotDefault(TestCase):
 
@@ -117,7 +120,7 @@ class TestAvatarGeneratorNotDefault(TestCase):
     def test_font_size(self):
         self.assertEqual(self.genA.font_size(), 135)
         self.assertEqual(self.genB.font_size(), 120)
-    
+
     def test_brightness(self):
         self.assertEqual(int(self.genA.brightness()), 222)
         self.assertEqual(int(self.genB.brightness()), 200)
