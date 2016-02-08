@@ -13,25 +13,18 @@ from PIL import Image, ImageDraw, ImageFont
 from math import sqrt
 from hashlib import md5
 from datetime import datetime
+from .utils import AVATAR_SHAPE_SETTINGS, AvatarShapeException
 import os
 import urllib2
 import StringIO
 
 GRAVATAR_DEFAULT_SIZE = getattr(settings, 'GRAVATAR_DEFAULT_SIZE', 80)
+AVATAR_SHAPE = getattr(settings, 'AVATAR_DEFAULT_SHAPE', 'square')
 
 try:
     AVATAR_STORAGE_BACKEND = get_storage_class(settings.AVATAR_STORAGE_BACKEND)()
 except AttributeError:
     AVATAR_STORAGE_BACKEND = default_storage
-
-AVATAR_SHAPE = getattr(settings, 'AVATAR_SHAPE', 'square')
-
-if AVATAR_SHAPE == 'square':
-    image_format = 'jpg'
-    content_type = 'JPEG'
-elif AVATAR_SHAPE == 'circle':
-    image_format = 'png'
-    content_type = 'PNG'
 
 
 class AvatarGenerator(object):
@@ -39,17 +32,23 @@ class AvatarGenerator(object):
         inspired by https://github.com/4teamwork/ftw.avatar
     """
 
-    def __init__(self, user, size=GRAVATAR_DEFAULT_SIZE):
+    def __init__(self, user, size=GRAVATAR_DEFAULT_SIZE, shape=AVATAR_SHAPE):
         self.user = user
         self.size = size
-        self.url = None
+        self.shape = shape
+        try:
+            self.image_format = AVATAR_SHAPE_SETTINGS[shape]['image_format']
+            self.content_type = AVATAR_SHAPE_SETTINGS[shape]['content_type']
+        except KeyError:
+            raise AvatarShapeException
         self.css_class = None
+        self.url = None
 
     def name(self):
         """
             returns the name of the img file
         """
-        return '{0}x{0}_{1}.{2}'.format(self.size, AVATAR_SHAPE, image_format)
+        return '{0}x{0}_{1}.{2}'.format(self.size, self.shape, self.image_format)
 
     def path(self):
         """
@@ -145,10 +144,12 @@ class AvatarGenerator(object):
             return None
 
     def genavatar(self):
-        if AVATAR_SHAPE == 'square':
-            self.gen_square_avatar()
-        elif AVATAR_SHAPE == 'cirlce':
-            self.gen_round_avatar()
+        if self.shape == 'square':
+            return self.gen_square_avatar()
+        elif self.shape == 'circle':
+            return self.gen_round_avatar()
+        else:
+            raise AvatarShapeException
 
     def gen_square_avatar(self):
         """
@@ -158,23 +159,23 @@ class AvatarGenerator(object):
         draw = ImageDraw.Draw(image)
         w, h = self.position(draw)
         draw.text((w, h), self.text(), fill=self.foreground(), font=self.font())
-        self.save_avatar(image)
+        url = self.save_avatar(image)
+        return url
 
     def gen_round_avatar(self):
-        image_format = 'png'
-        content_type = 'PNG'
         image = Image.new('RGBA', (self.size, self.size), (255, 0, 0, 0))
         draw = ImageDraw.Draw(image)
         draw.ellipse((0, 0, self.size, self.size), fill=self.background())
         w, h = self.position(draw)
         draw.text((w, h), self.text(), fill=self.foreground(), font=self.font())
-        self.save_avatar(image)
+        url = self.save_avatar(image)
+        return url
 
     def save_avatar(self, image):
         image_io = StringIO.StringIO()
-        image.save(image_io, format=content_type)
+        image.save(image_io, format=self.content_type)
         try:
-            django_file = InMemoryUploadedFile(image_io, None, self.name(), 'image/{0}'.format(content_type.lower()), image_io.len, None)
+            django_file = InMemoryUploadedFile(image_io, None, self.name(), 'image/{0}'.format(self.content_type.lower()), image_io.len, None)
             AVATAR_STORAGE_BACKEND.save(self.path(), django_file)
             return AVATAR_STORAGE_BACKEND.url(self.path())
         except Exception, e:
@@ -187,20 +188,20 @@ class AvatarGenerator(object):
         try:
             if has_gravatar(self.user.email):
                 self.css_class = "gravatar"
-                url = escape(get_gravatar_url(email=self.user.email, size=self.size))
-                return url
+                self.url = escape(get_gravatar_url(email=self.user.email, size=self.size))
+                return self.url
         except NameError:
             pass
         self.css_class = "initial-avatar"
         if AVATAR_STORAGE_BACKEND.exists(self.path()):
-            url = AVATAR_STORAGE_BACKEND.url(self.path())
+            self.url = AVATAR_STORAGE_BACKEND.url(self.path())
         else:
-            url = self.genavatar()
-        return url
+            self.url = self.genavatar()
+        return self.url
 
     def get_avatar(self):
         """
             returns an html img tag with the avatar
         """
-        self.url = self.get_avatar_url()
+        self.get_avatar_url()
         return '<img class="{css_class}" src="{src}" width="{width}" height="{height}"/>'.format(css_class=self.css_class, src=self.url, width=self.size, height=self.size)
