@@ -20,6 +20,7 @@ import StringIO
 
 GRAVATAR_DEFAULT_SIZE = getattr(settings, 'GRAVATAR_DEFAULT_SIZE', 80)
 AVATAR_SHAPE = getattr(settings, 'AVATAR_DEFAULT_SHAPE', 'square')
+AVATAR_STORAGE_FOLDER = getattr(settings, 'AVATAR_STORAGE_FOLDER', 'avatars')
 
 try:
     AVATAR_STORAGE_BACKEND = get_storage_class(settings.AVATAR_STORAGE_BACKEND)()
@@ -55,7 +56,7 @@ class AvatarGenerator(object):
             returns the path of the img file
         """
         user_hash = md5(os.path.join(self.user.username, self.user.first_name, self.user.last_name).encode('utf-8')).hexdigest()
-        user_path = os.path.join('avatars', user_hash, self.name())
+        user_path = os.path.join(AVATAR_STORAGE_FOLDER, user_hash, self.name())
         return user_path
 
     def font_size(self):
