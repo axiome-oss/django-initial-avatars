@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 import os
 
 SECRET_KEY = 'fake-key'
@@ -8,8 +9,8 @@ DATABASES = {
     }
 }
 INSTALLED_APPS = [
-	'django.contrib.contenttypes',
-	'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.auth',
     'initial_avatars',
     'django_gravatar',
 ]

@@ -9,10 +9,10 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='django-initial-avatars',
-    version='0.7.3',
+    version='0.7.5',
     packages=['initial_avatars', 'initial_avatars.templatetags'],
     include_package_data=True,
-    license='BSD License', 
+    license='BSD License',
     description='A simple Django app to get avatars based on username and initials if no gravatars is associated to the email address.',
     keywords='django gravatar initial avatar',
     long_description=open('README.rst').read(),
@@ -36,7 +36,8 @@ setup(
         'Topic :: Internet :: WWW/HTTP',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
     ],
-    extras_require={'gravatar': ['django-gravatar2>=1.3.0'],
+    extras_require={
+        'gravatar': ['django-gravatar2>=1.3.0'],
     },
-    zip_safe = False,
+    zip_safe=False,
 )

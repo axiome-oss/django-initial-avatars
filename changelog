@@ -1,3 +1,10 @@
+v0.7.5:
+	- really fix bug with accent in username, add tests for this case
+
+v0.7.4:
+	- add # -*- coding: utf-8 -*- at beginning of files to prevent bug 
+	when username has accent
+
 v0.7.3: 
 	- removes the last_modified_func decorator because of poor
 	performances
