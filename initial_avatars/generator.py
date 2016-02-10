@@ -146,27 +146,17 @@ class AvatarGenerator(object):
 
     def genavatar(self):
         if self.shape == 'square':
-            return self.gen_square_avatar()
+            return self.gen_image_avatar(self.background())
         elif self.shape == 'circle':
-            return self.gen_round_avatar()
+            return self.gen_image_avatar((255, 0, 0, 0))
         else:
             raise AvatarShapeException
 
-    def gen_square_avatar(self):
-        """
-            generates the requested avatar and saves it on the storage backend
-        """
-        image = Image.new('RGBA', (self.size, self.size), self.background())
+    def gen_image_avatar(self, background):
+        image = Image.new('RGBA', (self.size, self.size), background)
         draw = ImageDraw.Draw(image)
-        w, h = self.position(draw)
-        draw.text((w, h), self.text(), fill=self.foreground(), font=self.font())
-        url = self.save_avatar(image)
-        return url
-
-    def gen_round_avatar(self):
-        image = Image.new('RGBA', (self.size, self.size), (255, 0, 0, 0))
-        draw = ImageDraw.Draw(image)
-        draw.ellipse((0, 0, self.size, self.size), fill=self.background())
+        if self.shape == 'circle':
+            draw.ellipse((0, 0, self.size, self.size), fill=self.background())
         w, h = self.position(draw)
         draw.text((w, h), self.text(), fill=self.foreground(), font=self.font())
         url = self.save_avatar(image)
