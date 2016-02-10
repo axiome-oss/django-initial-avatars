@@ -1,3 +1,9 @@
+v0.8.0:
+    - add possibility to use cirle avatars with 'AVATAR_DEFAULT_SHAPE' settings (default to 'square')
+    - changed file naming
+    - add possibility to customize root storage folder with 'AVATAR_STORAGE_FOLDER' settings (default to 'avatars')
+    - update documentation
+
 v0.7.5:
 	- really fix bug with accent in username, add tests for this case
 
