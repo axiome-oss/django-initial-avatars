@@ -271,7 +271,7 @@ class TestAvatarGeneratorNotDefault(TestCase):
         self.assertEqual(responseAnon.status_code, 404)
 
 
-class MyTestCase(TestCase):
+class TestAvatarGeneratorBadSettings(TestCase):
 
     def setUp(self):
         self.userA = User.objects.create_user(
@@ -280,7 +280,7 @@ class MyTestCase(TestCase):
             password='top_secret'
         )
 
-    def test1(self):
+    def test_exception(self):
         self.assertRaises(
             AvatarShapeException,
             AvatarGenerator, self.userA, size=150, shape='triangle'
