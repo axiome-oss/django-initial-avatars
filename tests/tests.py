@@ -46,11 +46,11 @@ class TestAvatarGenerator(TestCase):
     def test_font_size(self):
         self.assertEqual(
             self.genA.font_size(),
-            72
+            720
         )
         self.assertEqual(
             self.genB.font_size(),
-            64
+            640
         )
 
     def test_brightness(self):
@@ -88,11 +88,11 @@ class TestAvatarGenerator(TestCase):
         draw = ImageDraw.Draw(image)
         self.assertEqual(
             self.genA.position(draw),
-            (22, 4)
+            (220, 48)
         )
         self.assertEqual(
             self.genB.position(draw),
-            (8, 6)
+            (80, 65)
         )
 
     def test_name(self):
@@ -201,8 +201,8 @@ class TestAvatarGeneratorNotDefault(TestCase):
         self.assertEqual(self.genB.text(), 'MS')
 
     def test_font_size(self):
-        self.assertEqual(self.genA.font_size(), 135)
-        self.assertEqual(self.genB.font_size(), 120)
+        self.assertEqual(self.genA.font_size(), 1350)
+        self.assertEqual(self.genB.font_size(), 1200)
 
     def test_brightness(self):
         self.assertEqual(int(self.genA.brightness()), 222)
@@ -219,8 +219,8 @@ class TestAvatarGeneratorNotDefault(TestCase):
     def test_position(self):
         image = Image.new('RGBA', (80, 80))
         draw = ImageDraw.Draw(image)
-        self.assertEqual(self.genA.position(draw), (41, 9))
-        self.assertEqual(self.genB.position(draw), (15, 12))
+        self.assertEqual(self.genA.position(draw), (412, 90))
+        self.assertEqual(self.genB.position(draw), (150, 122))
 
     def test_name(self):
         self.assertEqual(self.genA.name(), "150x150_circle.png")

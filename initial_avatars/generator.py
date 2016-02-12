@@ -35,6 +35,7 @@ class AvatarGenerator(object):
 
     def __init__(self, user, size=GRAVATAR_DEFAULT_SIZE, shape=AVATAR_SHAPE):
         self.user = user
+        self.work_size = size * 10
         self.size = size
         self.shape = shape
         try:
@@ -63,7 +64,7 @@ class AvatarGenerator(object):
         """
             returns the size of the font calculated according to the size of requested avatar
         """
-        font_size = int(self.size * (1 - 0.1 * len(self.text())))
+        font_size = int(self.work_size * (1 - 0.1 * len(self.text())))
         return font_size
 
     def font(self):
@@ -110,8 +111,8 @@ class AvatarGenerator(object):
             returns the position where the initials must be printed
         """
         text_width, text_height = draw.textsize(self.text(), font=self.font())
-        left = ((self.size - text_width) / 2)
-        top = ((self.size - text_height) / 4)
+        left = ((self.work_size - text_width) / 2)
+        top = ((self.work_size - text_height) / 4)
         return left, top
 
     def text(self):
@@ -153,12 +154,13 @@ class AvatarGenerator(object):
             raise AvatarShapeException
 
     def gen_image_avatar(self, background):
-        image = Image.new('RGBA', (self.size, self.size), background)
-        draw = ImageDraw.Draw(image)
+        work_image = Image.new('RGBA', (self.work_size, self.work_size), background)
+        draw = ImageDraw.Draw(work_image)
         if self.shape == 'circle':
-            draw.ellipse((0, 0, self.size, self.size), fill=self.background())
+            draw.ellipse((0, 0, self.work_size, self.work_size), fill=self.background())
         w, h = self.position(draw)
         draw.text((w, h), self.text(), fill=self.foreground(), font=self.font())
+        image = work_image.resize((self.size, self.size), resample=Image.BILINEAR)
         url = self.save_avatar(image)
         return url
 
