@@ -1,0 +1,19 @@
+image: python:2.7
+
+stages:
+  - test
+  - build
+
+unittest:
+  stage: test
+  script:
+    - pip install Django Pillow django-gravatar2
+    - python runtests.py
+
+build:
+  stage: build
+  script:
+    - python setup.py build
+  artifacts:
+    paths:
+      - build/lib/initial_avatars/
