@@ -84,9 +84,9 @@ Quick start
 
     {% load initialavatar %}
 
-    {% get_initial_avatar user [size] [shape] %}
+    {% get_initial_avatar user [size] ['shape'] %}
 
-    {% get_initial_avatar user.email [size] [shape] %}
+    {% get_initial_avatar user.email [size] ['shape'] %}
 
 
 Settings
