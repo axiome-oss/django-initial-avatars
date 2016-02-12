@@ -268,6 +268,14 @@ class TestAvatarGeneratorNotDefault(TestCase):
             renderedAnon
         )
 
+    def test_non_default_template_tags(self):
+        TEMPLATE = Template("{% load initialavatar %} {% get_initial_avatar user size=200 shape='square' %}")
+        renderedA = TEMPLATE.render(Context({'user': self.userA}))
+        self.assertTrue(
+            '<img class="initial-avatar" src="http://django-initial-avatars.py/avatars/1de33e9ce3bb61b6f82a27810590a785/150x150_circle.png" width="150" height="150"/>',
+            renderedA
+        )
+
     def test_view(self):
         responseA = self.client.get('/1/150/')
         self.assertEqual(responseA.status_code, 302)
