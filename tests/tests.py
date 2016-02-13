@@ -158,17 +158,17 @@ class TestAvatarGenerator(TestCase):
         renderedB = self.TEMPLATE.render(Context({'user': self.userB}))
         renderedAnon = self.TEMPLATE.render(Context({'user': AnonymousUser()}))
 
-        self.assertTrue(
+        self.assertEqual(
             renderedA,
-            '<img class="initial-avatar" src="http://django-initial-avatars.py/avatars/5c2b143bbec43c5a4e0f18000ebd3280/80x80_square.jpg" width="80" height="80"/>'
+            u' <img class="initial-avatar" src="http://django-initial-avatars.py/avatars/5c2b143bbec43c5a4e0f18000ebd3280/80x80_square.jpg" width="80" height="80"/>'
         )
-        self.assertTrue(
+        self.assertEqual(
             renderedB,
-            '<img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?s=80&amp;r=g&amp;d=mm" width="80" height="80"/>'
+            u' <img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?s=80&amp;r=g&amp;d=mm" width="80" height="80"/>'
         )
-        self.assertTrue(
+        self.assertEqual(
             renderedAnon,
-            '<img src="" width="80" height="80"/>'
+            u' <img src="" width="80" height="80"/>'
         )
 
     def test_view(self):
@@ -192,7 +192,7 @@ class TestAvatarGenerator(TestCase):
 
 class TestAvatarGeneratorNotDefault(TestCase):
 
-    TEMPLATE = Template("{% load initialavatar %} {% get_initial_avatar user %}")
+    TEMPLATE = Template("{% load initialavatar %} {% get_initial_avatar user 150 'circle' %}")
 
     def setUp(self):
         self.userA = User.objects.create_user(
@@ -232,7 +232,7 @@ class TestAvatarGeneratorNotDefault(TestCase):
 
     def test_brightness(self):
         self.assertEqual(
-            self.genA.brightness(),
+            int(self.genA.brightness()),
             222
         )
         self.assertEqual(
@@ -332,26 +332,26 @@ class TestAvatarGeneratorNotDefault(TestCase):
         renderedB = self.TEMPLATE.render(Context({'user': self.userB}))
         renderedAnon = self.TEMPLATE.render(Context({'user': AnonymousUser()}))
 
-        self.assertTrue(
+        self.assertEqual(
             renderedA,
-            '<img class="initial-avatar" src="http://django-initial-avatars.py/avatars/1de33e9ce3bb61b6f82a27810590a785/150x150_circle.png" width="150" height="150"/>'
+            u' <img class="initial-avatar" src="http://django-initial-avatars.py/avatars/1de33e9ce3bb61b6f82a27810590a785/150x150_circle.png" width="150" height="150"/>'
         )
-        self.assertTrue(
+        self.assertEqual(
             renderedB,
-            '<img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?s=80&amp;r=g&amp;d=mm" width="150" height="150"/>'
+            u' <img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?s=150&amp;r=g&amp;d=mm" width="150" height="150"/>'
         )
-        self.assertTrue(
+        self.assertEqual(
             renderedAnon,
-            '<img src="" width="150" height="150"/>'
+            u' <img src="" width="150" height="150"/>'
         )
 
     def test_non_default_template_tags(self):
-        TEMPLATE = Template("{% load initialavatar %} {% get_initial_avatar user size=200 shape='square' %}")
+        TEMPLATE = Template("{% load initialavatar %} {% get_initial_avatar user 200 'square' %}")
         renderedA = TEMPLATE.render(Context({'user': self.userA}))
 
-        self.assertTrue(
+        self.assertEqual(
             renderedA,
-            '<img class="initial-avatar" src="http://django-initial-avatars.py/avatars/1de33e9ce3bb61b6f82a27810590a785/150x150_circle.png" width="150" height="150"/>'
+            u' <img class="initial-avatar" src="http://django-initial-avatars.py/avatars/1de33e9ce3bb61b6f82a27810590a785/200x200_square.jpg" width="200" height="200"/>'
         )
 
     def test_view(self):
