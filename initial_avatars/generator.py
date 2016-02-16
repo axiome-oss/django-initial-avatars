@@ -111,8 +111,8 @@ class AvatarGenerator(object):
             returns the position where the initials must be printed
         """
         text_width, text_height = draw.textsize(self.text(), font=self.font())
-        left = ((self.work_size - text_width) / 2)
-        top = ((self.work_size - text_height) / 4)
+        left = ((self.work_size - text_width) // 2)
+        top = ((self.work_size - text_height) // 4)
         return left, top
 
     def text(self):
