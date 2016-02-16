@@ -124,9 +124,13 @@ class TestAvatarGenerator(TestCase):
             self.genA.get_avatar_url(),
             "http://django-initial-avatars.py/avatars/5c2b143bbec43c5a4e0f18000ebd3280/80x80_square.jpg"
         )
-        self.assertEqual(
+        self.assertIn(
             self.genB.get_avatar_url(),
-            "https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?s=80&amp;r=g&amp;d=mm"
+            [
+                "https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?s=80&amp;r=g&amp;d=mm",
+                "https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?r=g&amp;s=80&amp;d=mm",
+                "https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?d=mm&amp;s=80&amp;r=g"
+            ]
         )
 
     def test_get_avatar(self):
@@ -137,9 +141,12 @@ class TestAvatarGenerator(TestCase):
             self.genA.get_avatar(),
             '<img class="initial-avatar" src="http://django-initial-avatars.py/avatars/5c2b143bbec43c5a4e0f18000ebd3280/80x80_square.jpg" width="80" height="80"/>'
         )
-        self.assertEqual(
+        self.assertIn(
             self.genB.get_avatar(),
-            '<img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?s=80&amp;r=g&amp;d=mm" width="80" height="80"/>'
+            [
+                '<img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?s=80&amp;r=g&amp;d=mm" width="80" height="80"/>',
+                '<img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?d=mm&amp;s=80&amp;r=g" width="80" height="80"/>',
+            ]
         )
         self.assertTrue(default_storage.exists(self.genA.path()))
 
@@ -162,9 +169,12 @@ class TestAvatarGenerator(TestCase):
             renderedA,
             u' <img class="initial-avatar" src="http://django-initial-avatars.py/avatars/5c2b143bbec43c5a4e0f18000ebd3280/80x80_square.jpg" width="80" height="80"/>'
         )
-        self.assertEqual(
+        self.assertIn(
             renderedB,
-            u' <img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?s=80&amp;r=g&amp;d=mm" width="80" height="80"/>'
+            [
+                u' <img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?s=80&amp;r=g&amp;d=mm" width="80" height="80"/>',
+                u' <img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?d=mm&amp;s=80&amp;r=g" width="80" height="80"/>',
+            ]
         )
         self.assertEqual(
             renderedAnon,
@@ -298,9 +308,12 @@ class TestAvatarGeneratorNotDefault(TestCase):
             self.genA.get_avatar_url(),
             "http://django-initial-avatars.py/avatars/1de33e9ce3bb61b6f82a27810590a785/150x150_circle.png"
         )
-        self.assertEqual(
+        self.assertIn(
             self.genB.get_avatar_url(),
-            "https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?s=150&amp;r=g&amp;d=mm"
+            [
+                "https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?s=150&amp;r=g&amp;d=mm",
+                "https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?d=mm&amp;s=150&amp;r=g"
+            ]
         )
 
     def test_get_avatar(self):
@@ -311,9 +324,12 @@ class TestAvatarGeneratorNotDefault(TestCase):
             self.genA.get_avatar(),
             '<img class="initial-avatar" src="http://django-initial-avatars.py/avatars/1de33e9ce3bb61b6f82a27810590a785/150x150_circle.png" width="150" height="150"/>'
         )
-        self.assertEqual(
+        self.assertIn(
             self.genB.get_avatar(),
-            '<img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?s=150&amp;r=g&amp;d=mm" width="150" height="150"/>'
+            [
+                '<img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?s=150&amp;r=g&amp;d=mm" width="150" height="150"/>',
+                '<img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?d=mm&amp;s=150&amp;r=g" width="150" height="150"/>',
+            ]
         )
         self.assertTrue(default_storage.exists(self.genA.path()))
 
@@ -336,9 +352,12 @@ class TestAvatarGeneratorNotDefault(TestCase):
             renderedA,
             u' <img class="initial-avatar" src="http://django-initial-avatars.py/avatars/1de33e9ce3bb61b6f82a27810590a785/150x150_circle.png" width="150" height="150"/>'
         )
-        self.assertEqual(
+        self.assertIn(
             renderedB,
-            u' <img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?s=150&amp;r=g&amp;d=mm" width="150" height="150"/>'
+            [
+                u' <img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?s=150&amp;r=g&amp;d=mm" width="150" height="150"/>',
+                u' <img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?d=mm&amp;s=150&amp;r=g" width="150" height="150"/>',
+            ]
         )
         self.assertEqual(
             renderedAnon,
