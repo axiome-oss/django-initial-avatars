@@ -129,7 +129,8 @@ class TestAvatarGenerator(TestCase):
             [
                 "https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?s=80&amp;r=g&amp;d=mm",
                 "https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?r=g&amp;s=80&amp;d=mm",
-                "https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?d=mm&amp;s=80&amp;r=g"
+                "https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?d=mm&amp;s=80&amp;r=g",
+                "https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?d=mm&amp;r=g&amp;s=80"
             ]
         )
 
@@ -146,7 +147,8 @@ class TestAvatarGenerator(TestCase):
             [
                 '<img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?s=80&amp;r=g&amp;d=mm" width="80" height="80"/>',
                 '<img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?d=mm&amp;s=80&amp;r=g" width="80" height="80"/>',
-                '<img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?r=g&amp;s=80&amp;d=mm" width="80" height="80"/>'
+                '<img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?r=g&amp;s=80&amp;d=mm" width="80" height="80"/>',
+                '<img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?d=mm&amp;r=g&amp;s=80" width="80" height="80"/>'
             ]
         )
         self.assertTrue(default_storage.exists(self.genA.path()))
@@ -175,7 +177,8 @@ class TestAvatarGenerator(TestCase):
             [
                 u' <img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?s=80&amp;r=g&amp;d=mm" width="80" height="80"/>',
                 u' <img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?d=mm&amp;s=80&amp;r=g" width="80" height="80"/>',
-                u' <img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?r=g&amp;s=80&amp;d=mm" width="80" height="80"/>'
+                u' <img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?r=g&amp;s=80&amp;d=mm" width="80" height="80"/>',
+                u' <img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?d=mm&amp;r=g&amp;s=80" width="80" height="80"/>'
             ]
         )
         self.assertEqual(
@@ -314,7 +317,8 @@ class TestAvatarGeneratorNotDefault(TestCase):
             self.genB.get_avatar_url(),
             [
                 "https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?s=150&amp;r=g&amp;d=mm",
-                "https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?d=mm&amp;s=150&amp;r=g"
+                "https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?d=mm&amp;s=150&amp;r=g",
+                "https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?d=mm&amp;r=g&amp;s=150"
             ]
         )
 
@@ -331,7 +335,8 @@ class TestAvatarGeneratorNotDefault(TestCase):
             [
                 '<img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?s=150&amp;r=g&amp;d=mm" width="150" height="150"/>',
                 '<img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?d=mm&amp;s=150&amp;r=g" width="150" height="150"/>',
-                '<img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?r=g&amp;s=150&amp;d=mm" width="150" height="150"/>'
+                '<img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?r=g&amp;s=150&amp;d=mm" width="150" height="150"/>',
+                '<img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?d=mm&amp;r=g&amp;s=150" width="150" height="150"/>'
             ]
         )
         self.assertTrue(default_storage.exists(self.genA.path()))
@@ -360,7 +365,8 @@ class TestAvatarGeneratorNotDefault(TestCase):
             [
                 u' <img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?s=150&amp;r=g&amp;d=mm" width="150" height="150"/>',
                 u' <img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?d=mm&amp;s=150&amp;r=g" width="150" height="150"/>',
-                u' <img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?r=g&amp;s=150&amp;d=mm" width="150" height="150"/>'
+                u' <img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?r=g&amp;s=150&amp;d=mm" width="150" height="150"/>',
+                u' <img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?r=g&amp;s=150&amp;d=mm" width="150" height="150"/>',
             ]
         )
         self.assertEqual(
