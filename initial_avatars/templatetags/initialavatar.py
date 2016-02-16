@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.contrib.auth.models import User
+from django.utils.safestring import mark_safe
 from django import template
 from ..generator import AvatarGenerator, GRAVATAR_DEFAULT_SIZE, AVATAR_SHAPE
 
@@ -18,5 +19,5 @@ def get_initial_avatar(user_or_email, size=GRAVATAR_DEFAULT_SIZE, shape=AVATAR_S
     try:
         user = User.objects.get(email=email)
     except User.DoesNotExist:
-        return '<img src="" width="{width}" height="{height}"/>'.format(width=size, height=size)
-    return AvatarGenerator(user, size=int(size), shape=shape).get_avatar()
+        return mark_safe('<img src="" width="{width}" height="{height}"/>'.format(width=size, height=size))
+    return mark_safe(AvatarGenerator(user, size=int(size), shape=shape).get_avatar())
