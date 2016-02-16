@@ -173,7 +173,7 @@ class AvatarGenerator(object):
             django_file = InMemoryUploadedFile(image_io, None, self.name(), 'image/{0}'.format(self.content_type.lower()), image_io_length, None)
             AVATAR_STORAGE_BACKEND.save(self.path(), django_file)
             return AVATAR_STORAGE_BACKEND.url(self.path())
-        except Exception, e:
+        except Exception as e:
             raise e
 
     def get_avatar_url(self):
