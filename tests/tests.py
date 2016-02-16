@@ -377,7 +377,7 @@ class TestAvatarGeneratorNotDefault(TestCase):
                 u' <img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?s=150&amp;r=g&amp;d=mm" width="150" height="150"/>',
                 u' <img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?s=150&amp;d=mm&amp;r=g" width="150" height="150"/>',
                 u' <img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?r=g&amp;s=150&amp;d=mm" width="150" height="150"/>',
-                u' <img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?r=g&amp;d=mm&amp;s=150" width="150" height="150"/>'
+                u' <img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?r=g&amp;d=mm&amp;s=150" width="150" height="150"/>',
                 u' <img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?d=mm&amp;s=150&amp;r=g" width="150" height="150"/>',
                 u' <img class="gravatar" src="https://secure.gravatar.com/avatar/c0ccdd53794779bcc07fcae7b79c4d80.jpg?d=mm&amp;r=g&amp;s=150" width="150" height="150"/>',
             ]
