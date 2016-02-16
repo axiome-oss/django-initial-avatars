@@ -115,11 +115,11 @@ A few settings are at your disposal
 Tests
 --------------
 
-Django-initial-avatars is provided with tests, they require django-gravatar2
+Django-initial-avatars is provided with tests, they require django-gravatar2 and tox
 
 You can launch them in the virtualenv like this::
 
-        python runtests.py
+        tox
 
 It might happen that a calculated position fails because of a minor difference in the result, don't care about it.
 
