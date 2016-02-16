@@ -1,3 +1,13 @@
+v0.8.0:
+    - add possibility to use cirle avatars with 'AVATAR_DEFAULT_SHAPE' settings (default to 'square')
+    - add possibility to customize root folder on with 'AVATAR_STORAGE_FOLDER' settings (default to 'avatars')
+    - changed file naming
+    - improved image quality
+    - update documentation
+    - python 3.4 compatible
+    - django 1.9 compatible
+    - use tox for unittesting
+
 v0.7.5:
 	- really fix bug with accent in username, add tests for this case
 

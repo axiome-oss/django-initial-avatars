@@ -11,11 +11,13 @@ Examples
 -----------
 
 * API endpoint
+
 .. image:: https://metod-site.s3.amazonaws.com/media/25/initial_avatars.png
     :target: http://www.metod.io/fr/blog/2015/12/02/release-django-initial-avatars/
     :alt: example of django-initial-avatars on Metod
     
 * Template tag
+
 .. image:: https://metod-site.s3.amazonaws.com/media/25/initial_avatars_email.png
     :target: http://www.metod.io/fr/blog/2015/12/02/release-django-initial-avatars/
     :alt: example of django-initial-avatars in Metod emails
@@ -33,12 +35,16 @@ or on OS X with `homebrew`::
 
     $ brew install freetype
 
-After installing ``freetype`` Pillow may need to be rebuilt.
+Make sure the following packet are installed on your system to enable PNG and JPG support on Pillow::
+
+    $ sudo aptitude install libjpeg-dev zlib1g-dev libpng12-dev
+
+Pillow may need to be rebuilt after installing the libraries.
 
 Font licensing
 --------------
 
-For generating the avatar the font ``Ubuntu Monospace`` is used.
+The font ``Ubuntu Monospace`` is used to generate the avatar.
 The font is licensed under the Ubuntu Font Licence, see the
 `License <http://font.ubuntu.com/licence/>`_
 
@@ -78,25 +84,42 @@ Quick start
 
     {% load initialavatar %}
 
-    {% get_initial_avatar user [size] %}
+    {% get_initial_avatar user [size] ['shape'] %}
 
-    {% get_initial_avatar user.email [size] %}
+    {% get_initial_avatar user.email [size] ['shape'] %}
+
 
 Settings
---------------
+-----------
 
-You can define a setting to use a specific storage backend instead of the default one::
+A few settings are at your disposal
 
-        AVATAR_STORAGE_BACKEND = 'myproject.custom_storages.AvatarStorage'
+* AVATAR_STORAGE_BACKEND allows you to use a custom storage backend instead of the default one::
+
+    AVATAR_STORAGE_BACKEND = 'myproject.custom_storages.AvatarStorage'
+
+* AVATAR_STORAGE_FOLDER allows you to customize the root folder on the storage backend, default to 'avatars'::
+
+    AVATAR_STORAGE_FOLDER = 'myfolder'
+
+* AVATAR_DEFAULT_SHAPE allows you to choose the default shape of the image, possible options are 'circle' or 'square', default to 'square'
+
+  More shapes can be easily addded, just open an issue on github::
+
+    AVATAR_DEFAULT_SHAPE = 'circle'
+
+* GRAVATAR_DEFAULT_SIZE allows you to choose the default size of the image, setting name used for compatibility with django_gravatar, default to '80'::
+
+    GRAVATAR_DEFAULT_SIZE = 100
 
 Tests
 --------------
 
-Django-initial-avatars is provided with tests, they require django-gravatar2
+Django-initial-avatars is provided with tests, they require django-gravatar2 and tox
 
 You can launch them in the virtualenv like this::
 
-        python runtests.py
+        tox
 
 It might happen that a calculated position fails because of a minor difference in the result, don't care about it.
 
