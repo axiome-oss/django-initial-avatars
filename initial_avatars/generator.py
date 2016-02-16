@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+import os
 try:
     from django_gravatar.helpers import get_gravatar_url, has_gravatar
 except ImportError:
@@ -15,8 +16,7 @@ from math import sqrt
 from hashlib import md5
 from datetime import datetime
 from .utils import AVATAR_SHAPE_SETTINGS, AvatarShapeException
-import os
-import urllib2
+from .compat import urlopen
 
 GRAVATAR_DEFAULT_SIZE = getattr(settings, 'GRAVATAR_DEFAULT_SIZE', 80)
 AVATAR_SHAPE = getattr(settings, 'AVATAR_DEFAULT_SHAPE', 'square')
@@ -133,7 +133,7 @@ class AvatarGenerator(object):
         """
         try:
             if has_gravatar(self.user.email):
-                info = urllib2.urlopen(get_gravatar_url(email=self.user.email, size=self.size)).info()
+                info = urlopen(get_gravatar_url(email=self.user.email, size=self.size)).info()
                 return datetime.strptime(info['Last-Modified'], "%a, %d %b %Y %H:%M:%S GMT")
         except NameError:
             pass
