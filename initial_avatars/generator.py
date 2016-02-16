@@ -10,13 +10,13 @@ from django.conf import settings
 from django.core.files.storage import default_storage, get_storage_class
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from PIL import Image, ImageDraw, ImageFont
+from io import BytesIO
 from math import sqrt
 from hashlib import md5
 from datetime import datetime
 from .utils import AVATAR_SHAPE_SETTINGS, AvatarShapeException
 import os
 import urllib2
-import StringIO
 
 GRAVATAR_DEFAULT_SIZE = getattr(settings, 'GRAVATAR_DEFAULT_SIZE', 80)
 AVATAR_SHAPE = getattr(settings, 'AVATAR_DEFAULT_SHAPE', 'square')
@@ -165,10 +165,12 @@ class AvatarGenerator(object):
         return url
 
     def save_avatar(self, image):
-        image_io = StringIO.StringIO()
+        image_io = BytesIO()
         image.save(image_io, format=self.content_type)
+        image_io.seek(0, os.SEEK_END)
+        image_io_length = image_io.tell()
         try:
-            django_file = InMemoryUploadedFile(image_io, None, self.name(), 'image/{0}'.format(self.content_type.lower()), image_io.len, None)
+            django_file = InMemoryUploadedFile(image_io, None, self.name(), 'image/{0}'.format(self.content_type.lower()), image_io_length, None)
             AVATAR_STORAGE_BACKEND.save(self.path(), django_file)
             return AVATAR_STORAGE_BACKEND.url(self.path())
         except Exception, e:
