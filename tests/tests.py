@@ -92,7 +92,7 @@ class TestAvatarGenerator(TestCase):
 
         self.assertEqual(
             self.genA.position(draw),
-            (220, 48)
+            (220.0, 48.25)
         )
         self.assertEqual(
             self.genB.position(draw),
@@ -287,7 +287,7 @@ class TestAvatarGeneratorNotDefault(TestCase):
 
         self.assertEqual(
             self.genA.position(draw),
-            (412, 90)
+            (412.5, 90.25)
         )
         self.assertEqual(
             self.genB.position(draw),
