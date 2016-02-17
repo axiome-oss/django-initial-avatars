@@ -9,12 +9,12 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='django-initial-avatars',
-    version='0.8.0',
+    version='0.8.1',
     packages=['initial_avatars', 'initial_avatars.templatetags'],
     include_package_data=True,
     license='BSD License',
-    description='A simple Django app to get avatars based on username and initials if no gravatars is associated to the email address.',
-    keywords='django gravatar initial avatar',
+    description='A simple Django app to get avatars based on username and initials if no gravatars is associated with the email address.',
+    keywords='django avatar gravatar',
     long_description=open('README.rst').read(),
     url='https://github.com/axiome-oss/django-initial-avatars',
     author='Mathieu Requillart',
