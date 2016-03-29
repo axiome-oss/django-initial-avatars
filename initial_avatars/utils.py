@@ -1,6 +1,7 @@
 class AvatarShapeException(BaseException):
     pass
 
+
 class AvatarForegroundColorException(BaseException):
     pass
 
