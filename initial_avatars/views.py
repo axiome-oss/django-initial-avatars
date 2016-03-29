@@ -4,8 +4,9 @@ from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.http import last_modified
-from initial_avatars.generator import AvatarGenerator, GRAVATAR_DEFAULT_SIZE
 from datetime import date, timedelta
+from .generator import GRAVATAR_DEFAULT_SIZE
+from .utils import get_avatar_backend
 
 
 def last_modified_func(request, id, size=GRAVATAR_DEFAULT_SIZE):
@@ -13,12 +14,14 @@ def last_modified_func(request, id, size=GRAVATAR_DEFAULT_SIZE):
         u = User.objects.get(id=id)
     except User.DoesNotExist:
         return None
-    return AvatarGenerator(u, int(size)).last_modification()
+    avatar_backend = get_avatar_backend()
+    return avatar_backend(u, int(size)).last_modification()
 
 
 def avatar(request, id, size=GRAVATAR_DEFAULT_SIZE):
     user = get_object_or_404(User, id=id)
-    url = AvatarGenerator(user, size=int(size)).get_avatar_url()
+    avatar_backend = get_avatar_backend()
+    url = avatar_backend(user, size=int(size)).get_avatar_url()
     try:
         response = HttpResponseRedirect(url)
         response['Cache-Control'] = 'max-age=2592000'
