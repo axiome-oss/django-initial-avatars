@@ -96,7 +96,7 @@ class TestAvatarGenerator(TestCase):
         )
         self.assertEqual(
             self.genB.position(draw),
-            (80, 65)
+            (80.0, 65.25)
         )
 
     def test_name(self):

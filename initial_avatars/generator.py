@@ -16,12 +16,19 @@ from io import BytesIO
 from math import sqrt
 from hashlib import md5
 from datetime import datetime
-from .utils import AVATAR_SHAPE_SETTINGS, AvatarShapeException
+from .utils import AVATAR_SHAPE_SETTINGS, AVATAR_FOREGROUND_COLORS, AvatarShapeException, AvatarForegroundColorException
 from .compat import urlopen
 
 GRAVATAR_DEFAULT_SIZE = getattr(settings, 'GRAVATAR_DEFAULT_SIZE', 80)
 AVATAR_SHAPE = getattr(settings, 'AVATAR_DEFAULT_SHAPE', 'square')
 AVATAR_STORAGE_FOLDER = getattr(settings, 'AVATAR_STORAGE_FOLDER', 'avatars')
+
+try:
+    AVATAR_DEFAULT_FOREGROUND = AVATAR_FOREGROUND_COLORS[settings.AVATAR_DEFAUL_TEXT_COLOR]
+except KeyError:
+    raise AvatarForegroundColorException
+except AttributeError:
+    pass
 
 try:
     AVATAR_STORAGE_BACKEND = get_storage_class(settings.AVATAR_STORAGE_BACKEND)()
@@ -101,11 +108,14 @@ class AvatarGenerator(object):
         """
             returns black or white according to the brightness
         """
-        brightness = self.brightness()
-        if brightness > 130:
-            return (0, 0, 0)
-        else:
-            return (255, 255, 255)
+        try:
+            return AVATAR_DEFAULT_FOREGROUND
+        except NameError:
+            brightness = self.brightness()
+            if brightness > 130:
+                return (0, 0, 0)
+            else:
+                return (255, 255, 255)
 
     def position(self, draw):
         """

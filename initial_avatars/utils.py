@@ -1,6 +1,9 @@
 class AvatarShapeException(BaseException):
     pass
 
+class AvatarForegroundColorException(BaseException):
+    pass
+
 
 AVATAR_SHAPE_SETTINGS = {
     'circle': {
@@ -11,4 +14,9 @@ AVATAR_SHAPE_SETTINGS = {
         'image_format': 'jpg',
         'content_type': 'JPEG'
     }
+}
+
+AVATAR_FOREGROUND_COLORS = {
+    'white': (255, 255, 255),
+    'black': (0, 0, 0)
 }
