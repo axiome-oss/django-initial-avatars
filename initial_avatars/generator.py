@@ -22,6 +22,7 @@ from .compat import urlopen
 GRAVATAR_DEFAULT_SIZE = getattr(settings, 'GRAVATAR_DEFAULT_SIZE', 80)
 AVATAR_SHAPE = getattr(settings, 'AVATAR_DEFAULT_SHAPE', 'square')
 AVATAR_STORAGE_FOLDER = getattr(settings, 'AVATAR_STORAGE_FOLDER', 'avatars')
+AVATAR_HIGH_RESOLUTION = getattr(settings, 'AVATAR_HIGH_RESOLUTION', False)
 
 try:
     AVATAR_DEFAULT_FOREGROUND = AVATAR_FOREGROUND_COLORS[settings.AVATAR_DEFAUL_TEXT_COLOR]
@@ -54,18 +55,22 @@ class AvatarGenerator(object):
         self.css_class = None
         self.url = None
 
-    def name(self):
+    def name(self, high_res=False):
         """
             returns the name of the img file
         """
-        return '{0}x{0}_{1}.{2}'.format(self.size, self.shape, self.image_format)
+        if high_res:
+            name = "{0}x{0}_{1}@2x.{2}".format(self.size, self.shape, self.image_format)
+        else:
+            name = '{0}x{0}_{1}.{2}'.format(self.size, self.shape, self.image_format)
+        return name
 
-    def path(self):
+    def path(self, high_res=False):
         """
             returns the path of the img file
         """
         user_hash = md5(os.path.join(self.user.username, self.user.first_name, self.user.last_name).encode('utf-8')).hexdigest()
-        user_path = os.path.join(AVATAR_STORAGE_FOLDER, user_hash, self.name())
+        user_path = os.path.join(AVATAR_STORAGE_FOLDER, user_hash, self.name(high_res))
         return user_path
 
     def font_size(self):
@@ -173,16 +178,20 @@ class AvatarGenerator(object):
         draw.text((w, h), self.text(), fill=self.foreground(), font=self.font())
         image = work_image.resize((self.size, self.size), resample=Image.BILINEAR)
         url = self.save_avatar(image)
+        if AVATAR_HIGH_RESOLUTION:
+            high_res_image = work_image.resize((self.size * 2, self.size * 2), resample=Image.BILINEAR)
+            self.save_avatar(high_res_image, high_res=True)
         return url
 
-    def save_avatar(self, image):
+    def save_avatar(self, image, high_res=False):
         image_io = BytesIO()
         image.save(image_io, format=self.content_type)
         image_io.seek(0, os.SEEK_END)
         image_io_length = image_io.tell()
+        image_name = self.name(high_res)
         try:
-            django_file = InMemoryUploadedFile(image_io, None, self.name(), 'image/{0}'.format(self.content_type.lower()), image_io_length, None)
-            AVATAR_STORAGE_BACKEND.save(self.path(), django_file)
+            django_file = InMemoryUploadedFile(image_io, None, image_name, 'image/{0}'.format(self.content_type.lower()), image_io_length, None)
+            AVATAR_STORAGE_BACKEND.save(self.path(high_res), django_file)
             return AVATAR_STORAGE_BACKEND.url(self.path())
         except Exception as e:
             raise e
