@@ -21,6 +21,7 @@ include/
 local/
 log/
 tests/static/
+initial_avatars/user_colors.json
 *.egg-info/
 .installed.cfg
 *.egg

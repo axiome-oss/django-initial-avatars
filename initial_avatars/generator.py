@@ -2,6 +2,7 @@
 from __future__ import division
 from __future__ import unicode_literals
 import os
+import json
 try:
     from django_gravatar.helpers import get_gravatar_url, has_gravatar
 except ImportError:
@@ -16,6 +17,7 @@ from io import BytesIO
 from math import sqrt
 from hashlib import md5
 from datetime import datetime
+from random import choice
 from .utils import AVATAR_SHAPE_SETTINGS, AVATAR_FOREGROUND_COLORS, AvatarShapeException, AvatarForegroundColorException
 from .compat import urlopen
 
@@ -23,6 +25,7 @@ GRAVATAR_DEFAULT_SIZE = getattr(settings, 'GRAVATAR_DEFAULT_SIZE', 80)
 AVATAR_SHAPE = getattr(settings, 'AVATAR_DEFAULT_SHAPE', 'square')
 AVATAR_STORAGE_FOLDER = getattr(settings, 'AVATAR_STORAGE_FOLDER', 'avatars')
 AVATAR_HIGH_RESOLUTION = getattr(settings, 'AVATAR_HIGH_RESOLUTION', False)
+AVATAR_COLORS = getattr(settings, 'AVATAR_COLORS', False)
 
 try:
     AVATAR_DEFAULT_FOREGROUND = AVATAR_FOREGROUND_COLORS[settings.AVATAR_DEFAUL_TEXT_COLOR]
@@ -88,13 +91,32 @@ class AvatarGenerator(object):
         font_size = self.font_size()
         return ImageFont.truetype(font_path, size=font_size)
 
+    def choose_random_background(self):
+        jsonFile = os.path.join(os.path.dirname(__file__), 'user_colors.json')
+        try:
+            with open(jsonFile, 'r') as f:
+                user_colors = json.load(f)
+        except (ValueError, IOError):
+            user_colors = {}
+        try:
+            background = tuple(user_colors[self.user.username])
+        except KeyError:
+            background = choice(AVATAR_COLORS)
+            user_colors[self.user.username] = background
+            with open(jsonFile, 'w') as f:
+                f.write(json.dumps(user_colors))
+        return background
+
     def background(self):
         """
             returns the background color based on the username md5
         """
-        hash = md5(self.user.username.encode('utf-8')).hexdigest()
-        hash_values = (hash[:8], hash[8:16], hash[16:24])
-        background = tuple(int(value, 16) % 256 for value in hash_values)
+        if AVATAR_COLORS:
+            background = self.choose_random_background()
+        else:
+            hash = md5(self.user.username.encode('utf-8')).hexdigest()
+            hash_values = (hash[:8], hash[8:16], hash[16:24])
+            background = tuple(int(value, 16) % 256 for value in hash_values)
         return background
 
     def brightness(self):
