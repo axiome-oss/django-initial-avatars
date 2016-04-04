@@ -57,6 +57,8 @@ class AvatarGenerator(object):
             raise AvatarShapeException
         self.css_class = None
         self.url = None
+        if AVATAR_HIGH_RESOLUTION:
+            self.high_res_url = None
 
     def name(self, high_res=False):
         """
@@ -199,11 +201,11 @@ class AvatarGenerator(object):
         w, h = self.position(draw)
         draw.text((w, h), self.text(), fill=self.foreground(), font=self.font())
         image = work_image.resize((self.size, self.size), resample=Image.BILINEAR)
-        url = self.save_avatar(image)
+        self.url = self.save_avatar(image)
         if AVATAR_HIGH_RESOLUTION:
             high_res_image = work_image.resize((self.size * 2, self.size * 2), resample=Image.BILINEAR)
-            self.save_avatar(high_res_image, high_res=True)
-        return url
+            self.high_res_url = self.save_avatar(high_res_image, high_res=True).decode('utf-8')
+        return self.url
 
     def save_avatar(self, image, high_res=False):
         image_io = BytesIO()
@@ -214,7 +216,7 @@ class AvatarGenerator(object):
         try:
             django_file = InMemoryUploadedFile(image_io, None, image_name, 'image/{0}'.format(self.content_type.lower()), image_io_length, None)
             AVATAR_STORAGE_BACKEND.save(self.path(high_res), django_file)
-            return AVATAR_STORAGE_BACKEND.url(self.path())
+            return AVATAR_STORAGE_BACKEND.url(self.path(high_res))
         except Exception as e:
             raise e
 
@@ -229,11 +231,15 @@ class AvatarGenerator(object):
                 return self.url
         except NameError:
             pass
+
         self.css_class = "initial-avatar"
         if AVATAR_STORAGE_BACKEND.exists(self.path()):
             self.url = AVATAR_STORAGE_BACKEND.url(self.path())
         else:
             self.url = self.genavatar()
+        if AVATAR_HIGH_RESOLUTION:
+            self.high_res_url = AVATAR_STORAGE_BACKEND.url(self.path(high_res=True))
+            return self.url, self.high_res_url
         return self.url
 
     def get_avatar(self):
@@ -241,4 +247,17 @@ class AvatarGenerator(object):
             returns an html img tag with the avatar
         """
         self.get_avatar_url()
-        return '<img class="{css_class}" src="{src}" width="{width}" height="{height}"/>'.format(css_class=self.css_class, src=self.url, width=self.size, height=self.size)
+        if AVATAR_HIGH_RESOLUTION:
+            return '<img class="{css_class}" src="{src}" srcset="{src} 1x, {high_res_src} 2x" width="{width}" height="{height}"/>'.format(
+                css_class=self.css_class,
+                src=self.url,
+                high_res_src=escape(self.high_res_url),
+                width=self.size,
+                height=self.size
+            )
+        return '<img class="{css_class}" src="{src}" width="{width}" height="{height}"/>'.format(
+            css_class=self.css_class,
+            src=self.url,
+            width=self.size,
+            height=self.size
+        )
