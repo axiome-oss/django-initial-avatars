@@ -17,4 +17,3 @@ INSTALLED_APPS = [
 MEDIA_URL = 'http://django-initial-avatars.py/'
 MEDIA_ROOT = 'tests/static'
 ROOT_URLCONF = 'initial_avatars.urls'
-AVATAR_HIGH_RESOLUTION = True
