@@ -94,9 +94,9 @@ class AvatarGenerator(object):
         return ImageFont.truetype(font_path, size=font_size)
 
     def choose_random_background(self):
-        jsonFile = os.path.join(os.path.dirname(__file__), 'user_colors.json')
+        jsonFile = os.path.join(AVATAR_STORAGE_FOLDER, 'user_colors.json')
         try:
-            with open(jsonFile, 'r') as f:
+            with AVATAR_STORAGE_BACKEND.open(jsonFile, 'r') as f:
                 user_colors = json.load(f)
         except (ValueError, IOError):
             user_colors = {}
@@ -105,7 +105,7 @@ class AvatarGenerator(object):
         except KeyError:
             background = choice(AVATAR_COLORS)
             user_colors[self.user.username] = background
-            with open(jsonFile, 'w') as f:
+            with AVATAR_STORAGE_BACKEND.open(jsonFile, 'w') as f:
                 f.write(json.dumps(user_colors))
         return background
 
