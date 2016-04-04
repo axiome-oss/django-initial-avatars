@@ -13,7 +13,7 @@ from django.conf import settings
 from django.core.files.storage import default_storage, get_storage_class
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from PIL import Image, ImageDraw, ImageFont
-from io import BytesIO
+from io import BytesIO, StringIO
 from math import sqrt
 from hashlib import md5
 from datetime import datetime
@@ -105,8 +105,10 @@ class AvatarGenerator(object):
         except KeyError:
             background = choice(AVATAR_COLORS)
             user_colors[self.user.username] = background
-            with AVATAR_STORAGE_BACKEND.open(jsonFile, 'w') as f:
-                f.write(json.dumps(user_colors))
+            if AVATAR_STORAGE_BACKEND.exists(jsonFile):
+                AVATAR_STORAGE_BACKEND.delete(jsonFile)
+            f = StringIO(unicode(json.dumps(user_colors)))
+            AVATAR_STORAGE_BACKEND.save(jsonFile, f)
         return background
 
     def background(self):
