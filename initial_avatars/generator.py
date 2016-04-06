@@ -2,7 +2,6 @@
 from __future__ import division
 from __future__ import unicode_literals
 import os
-import json
 try:
     from django_gravatar.helpers import get_gravatar_url, has_gravatar
 except ImportError:
@@ -13,12 +12,13 @@ from django.conf import settings
 from django.core.files.storage import default_storage, get_storage_class
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from PIL import Image, ImageDraw, ImageFont
-from io import BytesIO, StringIO
+from io import BytesIO
 from math import sqrt
 from hashlib import md5
 from datetime import datetime
 from random import choice
 from .utils import AVATAR_SHAPE_SETTINGS, AVATAR_FOREGROUND_COLORS, AvatarShapeException, AvatarForegroundColorException
+from .models import Background
 from .compat import urlopen
 
 GRAVATAR_DEFAULT_SIZE = getattr(settings, 'GRAVATAR_DEFAULT_SIZE', 80)
@@ -94,21 +94,12 @@ class AvatarGenerator(object):
         return ImageFont.truetype(font_path, size=font_size)
 
     def choose_random_background(self):
-        jsonFile = os.path.join(AVATAR_STORAGE_FOLDER, 'user_colors.json')
         try:
-            with AVATAR_STORAGE_BACKEND.open(jsonFile, 'r') as f:
-                user_colors = json.load(f)
-        except (ValueError, IOError):
-            user_colors = {}
-        try:
-            background = tuple(user_colors[self.user.username])
-        except KeyError:
+            backgroundObject = Background.objects.get(user=self.user)
+            background = (backgroundObject.R, backgroundObject.G, backgroundObject.B)
+        except Background.DoesNotExist:
             background = choice(AVATAR_COLORS)
-            user_colors[self.user.username] = background
-            if AVATAR_STORAGE_BACKEND.exists(jsonFile):
-                AVATAR_STORAGE_BACKEND.delete(jsonFile)
-            f = StringIO(unicode(json.dumps(user_colors)))
-            AVATAR_STORAGE_BACKEND.save(jsonFile, f)
+            Background.objects.create(user=self.user, R=background[0], G=background[1], B=background[2])
         return background
 
     def background(self):
