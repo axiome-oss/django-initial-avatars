@@ -114,6 +114,35 @@ A few settings are at your disposal
 
     GRAVATAR_DEFAULT_SIZE = 100
 
+* AVATAR_HIGH_RESOLUTION can be used to display retina ready avatas, default to False::
+
+    AVATAR_HIGH_RESOLUTION = True
+
+* AVATAR_COLORS can be used to randomly choose a color from a tuple of pre-defined colors at first avatar generation, no default.
+
+    AVATAR_COLORS = ((37, 114, 221), (26, 193, 255),)
+
+* AVATAR_DEFAULT_FOREGROUND can be used to define a default color to the foreground, 'black' and 'white' available, no default. I advise not to use it without AVATAR_COLORS.
+
+    AVATAR_DEFAULT_FOREGROUND = 'white'
+
+* AVATAR_GENERATOR_BACKEND can be used to extend the avatar generator and adjust it to your needs, especially for font customization. Refer to initial_avatars/generator.py for more information.
+
+    AVATAR_GENERATOR_BACKEND = 'my_project.avatar_backend.py.MyAvatarBackend'
+
+
+.. code-block:: python
+    from initial_avatars.generator import AvatarGenerator
+    from PIL import ImageFont
+    import os
+    class MyAvatarBackend(AvatarGenerator):
+         def font(self):
+            font_path = '/path/to/your/font'
+            font_size = self.font_size()
+            return ImageFont.truetype(font_path, size=font_size)
+
+
+
 Tests
 --------------
 
