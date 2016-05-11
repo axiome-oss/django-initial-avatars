@@ -2,6 +2,7 @@
 from __future__ import division
 from __future__ import unicode_literals
 import os
+import re
 try:
     from django_gravatar.helpers import get_gravatar_url, has_gravatar
 except ImportError:
@@ -153,9 +154,20 @@ class AvatarGenerator(object):
             returns the text to be printed on the avatar
             first letter of first_name and last_name if they exists
             first letter of the username if not
+
+            Attempts to find first capital letter of last name. This supports
+            names such as "Alexandre da Rocha" by using the correct form "AR".
         """
         if self.user.first_name and self.user.last_name:
-            initial = self.user.first_name[:1].upper() + self.user.last_name[:1].upper()
+            initial = self.user.first_name[:1].upper()
+
+            match = re.search(r'[A-Z]', self.user.last_name)
+            if match:
+                # Use first capital letter
+                initial += match.group()
+            else:
+                # No capitals found; just use first letter
+                initial += self.user.last_name[:1].upper()
         else:
             initial = self.user.username[:1].upper()
         return initial

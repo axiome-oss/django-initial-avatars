@@ -35,7 +35,17 @@ class TestAvatarGenerator(TestCase):
             self.userB,
             80
         )
-
+        self.userC = User.objects.create_user(
+            username='carlotta',
+            first_name='carlotta',
+            last_name='da Silva',
+            email='cs@automattic.com',
+            password='top_secret'
+        )
+        self.genC = AvatarGenerator(
+            self.userC,
+            80
+        )
     def test_text(self):
         self.assertEqual(
             self.genA.text(),
@@ -44,6 +54,10 @@ class TestAvatarGenerator(TestCase):
         self.assertEqual(
             self.genB.text(),
             'MS'
+        )
+        self.assertEqual(
+            self.genC.text(),
+            'CS'
         )
 
     def test_font_size(self):
