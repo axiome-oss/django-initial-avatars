@@ -35,7 +35,17 @@ class TestAvatarGenerator(TestCase):
             self.userB,
             80
         )
-
+        self.userC = User.objects.create_user(
+            username='carlotta',
+            first_name='carlotta',
+            last_name='da Silva',
+            email='cs@automattic.com',
+            password='top_secret'
+        )
+        self.genC = AvatarGenerator(
+            self.userC,
+            80
+        )
     def test_text(self):
         self.assertEqual(
             self.genA.text(),
@@ -44,6 +54,10 @@ class TestAvatarGenerator(TestCase):
         self.assertEqual(
             self.genB.text(),
             'MS'
+        )
+        self.assertEqual(
+            self.genC.text(),
+            'CS'
         )
 
     def test_font_size(self):
@@ -94,9 +108,14 @@ class TestAvatarGenerator(TestCase):
             self.genA.position(draw),
             (220.0, 48.25)
         )
-        self.assertEqual(
+
+        possiblePositions = [
+            (80.0, 65.0),
+            (80.0, 65.25),
+        ]
+        self.assertIn(
             self.genB.position(draw),
-            (80, 65)
+            possiblePositions
         )
 
     def test_name(self):
@@ -137,7 +156,9 @@ class TestAvatarGenerator(TestCase):
         )
 
     def test_get_avatar(self):
+        default_storage.delete('avatars/5c2b143bbec43c5a4e0f18000ebd3280/80x80_square@2x.jpg')
         default_storage.delete(self.genA.path())
+
         self.assertFalse(default_storage.exists(self.genA.path()))
 
         self.assertEqual(
@@ -333,6 +354,7 @@ class TestAvatarGeneratorNotDefault(TestCase):
 
     def test_get_avatar(self):
         default_storage.delete(self.genA.path())
+        default_storage.delete('avatars/1de33e9ce3bb61b6f82a27810590a785/150x150_circle@2x.png')
         self.assertFalse(default_storage.exists(self.genA.path()))
 
         self.assertEqual(
