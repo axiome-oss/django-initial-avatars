@@ -114,6 +114,11 @@ A few settings are at your disposal
 
     GRAVATAR_DEFAULT_SIZE = 100
 
+
+Experimental settings
+------------
+* Those feature are available but miss tests, contributions would be appreciated :)
+
 * AVATAR_HIGH_RESOLUTION can be used to display retina ready avatas, default to False::
 
     AVATAR_HIGH_RESOLUTION = True
