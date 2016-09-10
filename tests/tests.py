@@ -108,9 +108,14 @@ class TestAvatarGenerator(TestCase):
             self.genA.position(draw),
             (220.0, 48.25)
         )
-        self.assertEqual(
+
+        possiblePositions = [
+            (80.0, 65.0),
+            (80.0, 65.25),
+        ]
+        self.assertIn(
             self.genB.position(draw),
-            (80.0, 65.0)
+            possiblePositions
         )
 
     def test_name(self):
