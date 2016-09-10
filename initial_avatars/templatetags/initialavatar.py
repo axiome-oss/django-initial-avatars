@@ -14,12 +14,14 @@ def get_initial_avatar(user_or_email, size=GRAVATAR_DEFAULT_SIZE, shape=AVATAR_S
     """ Builds an avatar <img> tag from an user or email """
 
     if hasattr(user_or_email, 'email'):
-        email = user_or_email.email
+        user = user_or_email
+        email = user.email
     else:
         email = user_or_email
-    try:
-        user = User.objects.get(email=email)
-    except User.DoesNotExist:
-        return mark_safe('<img src="" width="{width}" height="{height}"/>'.format(width=size, height=size))
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            return mark_safe('<img src="" width="{width}" height="{height}"/>'.format(width=size, height=size))
+
     avatar_backend = get_avatar_backend()
     return mark_safe(avatar_backend(user, size=int(size), shape=shape).get_avatar())
