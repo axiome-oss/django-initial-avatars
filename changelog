@@ -1,3 +1,13 @@
+v0.9:
+	- add compatibility with retina screens 'AVATAR_HIGH_RESOLUTION' settings
+	- add 'AVATAR_COLORS' settings to choose avatar colors from defined list
+	- add 'AVATAR_DEFAULT_FOREGROUND' settings to use black or white as default letter color
+	- add possibility to custom font with 'AVATAR_GENERATOR_BACKEND' settings
+	- django 1.10 compatible
+	- thanks to thomashamlin :
+		- improve performance in templates
+		- add support for last names that start with lowercase characters like "da Rocha"
+
 v0.8.0:
     - add possibility to use cirle avatars with 'AVATAR_DEFAULT_SHAPE' settings (default to 'square')
     - add possibility to customize root folder on with 'AVATAR_STORAGE_FOLDER' settings (default to 'avatars')
