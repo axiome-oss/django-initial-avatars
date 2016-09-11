@@ -117,23 +117,23 @@ A few settings are at your disposal
 
 Experimental settings
 ------------
-* Those feature are available but miss tests, contributions would be appreciated :)
+Those feature are available but miss tests, contributions would be appreciated :)
 
 * AVATAR_HIGH_RESOLUTION can be used to display retina ready avatas, default to False::
 
     AVATAR_HIGH_RESOLUTION = True
 
-* AVATAR_COLORS can be used to randomly choose a color from a tuple of pre-defined colors at first avatar generation, no default.
+* AVATAR_COLORS can be used to randomly choose a color from a tuple of pre-defined colors at first avatar generation, no default::
 
     AVATAR_COLORS = ((37, 114, 221), (26, 193, 255),)
 
-* AVATAR_DEFAULT_FOREGROUND can be used to define a default color to the foreground, 'black' and 'white' available, no default. I advise not to use it without AVATAR_COLORS.
+* AVATAR_DEFAULT_FOREGROUND can be used to define a default color to the foreground, 'black' and 'white' available, no default. I advise not to use it without AVATAR_COLORS::
 
     AVATAR_DEFAULT_FOREGROUND = 'white'
 
-* AVATAR_GENERATOR_BACKEND can be used to extend the avatar generator and adjust it to your needs, especially for font customization. Refer to initial_avatars/generator.py for more information.
+* AVATAR_GENERATOR_BACKEND can be used to extend the avatar generator and adjust it to your needs, especially for font customization. Refer to initial_avatars/generator.py for more information::
 
-    AVATAR_GENERATOR_BACKEND = 'my_project.avatar_backend.py.MyAvatarBackend'
+    AVATAR_GENERATOR_BACKEND = 'my_project.avatar_backend.MyAvatarBackend'
 
 
 .. code-block:: python
