@@ -54,6 +54,7 @@ class AvatarGenerator(object):
         try:
             self.image_format = AVATAR_SHAPE_SETTINGS[shape]['image_format']
             self.content_type = AVATAR_SHAPE_SETTINGS[shape]['content_type']
+            self.color_channels = AVATAR_SHAPE_SETTINGS[shape]['color_channels']
         except KeyError:
             raise AvatarShapeException
         self.css_class = None
@@ -199,7 +200,7 @@ class AvatarGenerator(object):
             raise AvatarShapeException
 
     def gen_image_avatar(self, background):
-        work_image = Image.new('RGBA', (self.work_size, self.work_size), background)
+        work_image = Image.new(self.color_channels, (self.work_size, self.work_size), background)
         draw = ImageDraw.Draw(work_image)
         if self.shape == 'circle':
             draw.ellipse((0, 0, self.work_size, self.work_size), fill=self.background())

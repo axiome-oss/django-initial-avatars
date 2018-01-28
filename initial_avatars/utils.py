@@ -20,11 +20,13 @@ def get_avatar_backend():
 AVATAR_SHAPE_SETTINGS = {
     'circle': {
         'image_format': 'png',
-        'content_type': 'PNG'
+        'content_type': 'PNG',
+        'color_channels': 'RGBA'
     },
     'square': {
         'image_format': 'jpg',
-        'content_type': 'JPEG'
+        'content_type': 'JPEG',
+        'color_channels': 'RGB'
     }
 }
 
