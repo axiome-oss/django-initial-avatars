@@ -1,5 +1,6 @@
 import os
 from setuptools import setup
+from initial_avatars import __version__
 
 with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as readme:
     README = readme.read()
@@ -9,7 +10,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='django-initial-avatars',
-    version='0.9',
+    version=__version__,
     packages=['initial_avatars', 'initial_avatars.templatetags'],
     include_package_data=True,
     license='BSD License',
@@ -18,7 +19,7 @@ setup(
     long_description=open('README.rst').read(),
     url='https://github.com/axiome-oss/django-initial-avatars',
     author='Mathieu Requillart',
-    author_email='mrequillart@axiome.io',
+    author_email='mathieu.requillart@gmail.com',
     install_requires=[
         'Pillow',
         'Django',
@@ -34,10 +35,13 @@ setup(
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
         'Framework :: Django :: 1.7',
         'Framework :: Django :: 1.8',
         'Framework :: Django :: 1.9',
         'Framework :: Django :: 1.10',
+        'Framework :: Django :: 1.11',
+        'Framework :: Django :: 2.0',
         'Topic :: Internet :: WWW/HTTP',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
     ],
