@@ -27,6 +27,7 @@ AVATAR_SHAPE = getattr(settings, 'AVATAR_DEFAULT_SHAPE', 'square')
 AVATAR_STORAGE_FOLDER = getattr(settings, 'AVATAR_STORAGE_FOLDER', 'avatars')
 AVATAR_HIGH_RESOLUTION = getattr(settings, 'AVATAR_HIGH_RESOLUTION', False)
 AVATAR_COLORS = getattr(settings, 'AVATAR_COLORS', False)
+AVATAR_FONT_PATH = getattr(settings, 'AVATAR_FONT_PATH', os.path.join(os.path.dirname(__file__), 'font', 'UbuntuMono-B.ttf'))
 
 try:
     AVATAR_DEFAULT_FOREGROUND = AVATAR_FOREGROUND_COLORS[settings.AVATAR_DEFAUL_TEXT_COLOR]
@@ -91,9 +92,8 @@ class AvatarGenerator(object):
         """
             returns an ImageFont object with the font used to generate the avatar
         """
-        font_path = os.path.join(os.path.dirname(__file__), 'font', 'UbuntuMono-B.ttf')
         font_size = self.font_size()
-        return ImageFont.truetype(font_path, size=font_size)
+        return ImageFont.truetype(AVATAR_FONT_PATH, size=font_size)
 
     def choose_random_background(self):
         try:
