@@ -1,14 +1,15 @@
+⚠️ This project is no longer maintained
+========================================
+
+Development has been taken over by `Urolas/django4-initial-avatars <https://github.com/Urolas/django4-initial-avatars>`_.
+
+**Please use that repository instead** — it is actively maintained and supports Django 4.
+
+----
+
 django-initial-avatars
 
 ======================
-
-.. warning::
-
-    **This project is no longer maintained.**
-
-    Development has been taken over by `Urolas/django4-initial-avatars
-    <https://github.com/Urolas/django4-initial-avatars>`_. Please head there
-    for an up-to-date version with Django 4 support.
 
 .. image:: https://badge.fury.io/py/django-initial-avatars.svg
     :target: https://badge.fury.io/py/django-initial-avatars
