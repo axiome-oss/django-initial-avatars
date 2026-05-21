@@ -2,7 +2,15 @@ django-initial-avatars
 
 ======================
 
-.. image:: https://badge.fury.io/py/django-initial-avatars.svg  
+.. warning::
+
+    **This project is no longer maintained.**
+
+    Development has been taken over by `Urolas/django4-initial-avatars
+    <https://github.com/Urolas/django4-initial-avatars>`_. Please head there
+    for an up-to-date version with Django 4 support.
+
+.. image:: https://badge.fury.io/py/django-initial-avatars.svg
     :target: https://badge.fury.io/py/django-initial-avatars
 .. image:: https://travis-ci.org/axiome-oss/django-initial-avatars.svg?branch=master
     :target: https://travis-ci.org/axiome-oss/django-initial-avatars
