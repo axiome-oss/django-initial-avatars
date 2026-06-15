@@ -27,6 +27,7 @@ AVATAR_SHAPE = getattr(settings, 'AVATAR_DEFAULT_SHAPE', 'square')
 AVATAR_STORAGE_FOLDER = getattr(settings, 'AVATAR_STORAGE_FOLDER', 'avatars')
 AVATAR_HIGH_RESOLUTION = getattr(settings, 'AVATAR_HIGH_RESOLUTION', False)
 AVATAR_COLORS = getattr(settings, 'AVATAR_COLORS', False)
+AVATAR_FONT_PATH = getattr(settings, 'AVATAR_FONT_PATH', os.path.join(os.path.dirname(__file__), 'font', 'UbuntuMono-B.ttf'))
 
 try:
     AVATAR_DEFAULT_FOREGROUND = AVATAR_FOREGROUND_COLORS[settings.AVATAR_DEFAUL_TEXT_COLOR]
@@ -91,9 +92,8 @@ class AvatarGenerator(object):
         """
             returns an ImageFont object with the font used to generate the avatar
         """
-        font_path = os.path.join(os.path.dirname(__file__), 'font', 'UbuntuMono-B.ttf')
         font_size = self.font_size()
-        return ImageFont.truetype(font_path, size=font_size)
+        return ImageFont.truetype(AVATAR_FONT_PATH, size=font_size)
 
     def choose_random_background(self):
         try:
@@ -145,9 +145,11 @@ class AvatarGenerator(object):
         """
             returns the position where the initials must be printed
         """
-        text_width, text_height = draw.textsize(self.text(), font=self.font())
-        left = ((self.work_size - text_width) / 2)
-        top = ((self.work_size - text_height) / 4)
+        text_font = self.font()
+        ascent, descent = text_font.getmetrics()
+        (text_width, baseline), (offset_x, offset_y) = text_font.font.getsize(self.text())
+        left = (self.work_size - text_width) / 2
+        top = (self.work_size - ascent - offset_y) / 2
         return left, top
 
     def text(self):
